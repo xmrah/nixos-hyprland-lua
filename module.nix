@@ -10,9 +10,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    xdg.configFile."hypr" = {
-      source = ./lua;
-      recursive = true;
-    };
+    # Nix Store'u bypass eden "Gerçek Live-Edit" sihri
+    # Bu sayede Projects klasöründeki her değişiklik anında aktif olur.
+    home.file.".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/xmrah/Projects/nixos-hyprland-lua/lua";
   };
 }

@@ -1,18 +1,17 @@
 -- Hyprland 0.55 Native Lua Framework
--- Entry Point: hyprland.lua
--- Hardened Version (Safe Boot)
+-- Entry Point: hyprland.lua (Sovereign Edition)
+-- Hardened and dynamic path resolution
 
-if not hl then
-    return
-end
+if not hl then return end
 
--- Fallback user path if HOME env is missing during login
-local user_home = os.getenv("HOME") or "/home/xmrah"
+-- Dinamik ve Güvenli Yol Tespiti
+local user_home = os.getenv("HOME") 
+               or os.getenv("XDG_CONFIG_HOME") 
+               or ("/home/" .. (os.getenv("USER") or "xmrah"))
 
--- Modüler Yükleme Fonksiyonu
 local function load_module(name)
     local path = user_home .. "/.config/hypr/" .. name .. ".lua"
-    -- Check if file exists before dofile to prevent crash
+    -- Check if file exists before dofile
     local f = io.open(path, "r")
     if f then
         f:close()
@@ -25,9 +24,11 @@ local function load_module(name)
     end
 end
 
--- Yükleme Sırası
+-- Yükleme Sırası (Order is crucial)
 load_module("autostart")
 load_module("hardware")
 load_module("theme")
 load_module("rules")
 load_module("binds")
+
+print("Hyprland Sovereign Framework initialized at " .. user_home)

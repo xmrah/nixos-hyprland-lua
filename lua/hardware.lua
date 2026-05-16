@@ -1,6 +1,13 @@
 -- Hardware & Monitor (AMD RX 7700 XT / ASUS 180Hz)
--- Hardened for login safety
+-- Sovereign Edition
 
+-- Environment Variables (Native 0.55 API)
+-- Bunlar artık login sırasında çökme riskini önleyecek şekilde native atanır.
+hl.env("WLR_NO_HARDWARE_CURSORS", "0")
+hl.env("AMD_DEBUG", "radeonsi")
+hl.env("AQ_DRM_DEVICES", "/dev/dri/renderD128") -- AMD RX 7700 XT force render node
+
+-- Monitor Configuration
 hl.monitor({
     output   = "desc:ASUSTek COMPUTER INC XG27ACS SBLMTF097654",
     mode     = "2560x1440@180",
@@ -8,6 +15,7 @@ hl.monitor({
     scale    = "1",
 })
 
+-- General Input Config
 hl.config({
     input = {
         kb_layout = "tr",
@@ -24,12 +32,3 @@ hl.config({
         no_hardware_cursors = false,
     }
 })
-
--- Safe Environment Variables
-if hl.env then
-    hl.env("WLR_NO_HARDWARE_CURSORS", "0")
-    hl.env("AMD_DEBUG", "radeonsi")
-else
-    -- Fallback for older 0.55 builds if hl.env is missing
-    os.execute("export WLR_NO_HARDWARE_CURSORS=0")
-end

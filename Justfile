@@ -1,13 +1,13 @@
 # nixos-hyprland-lua - Framework Yönetim Paneli
-# Author: xmrah
+# Author: xmrah (Sovereign Edition)
 
 # Varsayılan yardım menüsü
 default:
     @just --list
 
 # Tüm değişiklikleri anlık olarak Codeberg'e gönder
-# Kullanım: just sync "Mesajın buraya"
 sync message="framework update":
+    just check
     git add .
     git commit -m "feat(lua): {{message}} - $(date +'%Y-%m-%d %H:%M')" || echo "Değişiklik yok."
     git push
@@ -16,9 +16,13 @@ sync message="framework update":
 reload:
     hyprctl reload
 
-# Hata kontrolü yap
+# Lua Syntax ve Hyprland API doğrulaması
 check:
-    hyprctl configerrors
+    @echo "🔍 Checking Lua syntax..."
+    @luac -p lua/*.lua || (echo "❌ Lua Syntax Error!"; exit 1)
+    @echo "🔍 Checking Hyprland config..."
+    @hyprctl configerrors
+    @echo "✅ Everything looks good."
 
 # Logları takip et
 logs:
