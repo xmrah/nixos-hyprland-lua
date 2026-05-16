@@ -1,2 +1,0 @@
-# nixos-hyprland-lua
-
