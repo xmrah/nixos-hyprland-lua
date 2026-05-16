@@ -1,7 +1,6 @@
--- Window Rules
+-- Safe-Mode Rules (Minimal)
 hl.config({
     windowrule = {
         "float, ^(pavucontrol)$",
-        "float, ^(blueman-manager)$",
     },
 })
