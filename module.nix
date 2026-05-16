@@ -14,7 +14,5 @@ in {
       source = ./lua;
       recursive = true;
     };
-
-    wayland.windowManager.hyprland.package = pkgs.hyprland;
   };
 }
