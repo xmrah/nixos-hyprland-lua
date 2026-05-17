@@ -1,6 +1,0 @@
--- Safe-Mode Rules (Minimal)
-hl.config({
-    windowrule = {
-        "float, ^(pavucontrol)$",
-    },
-})

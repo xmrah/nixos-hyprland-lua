@@ -1,21 +1,21 @@
--- Hardware & Monitor (AMD RX 7700 XT / ASUS 180Hz)
--- Sovereign Edition
+-- Hardware & Monitor (AMD RX 7700 XT / ASUS ROG Strix 180Hz)
+-- Sovereign Edition — Hyprland 0.55+ Native Lua API
 
--- Environment Variables (Native 0.55 API)
--- Bunlar artık login sırasında çökme riskini önleyecek şekilde native atanır.
-hl.env("WLR_NO_HARDWARE_CURSORS", "0")
-hl.env("AMD_DEBUG", "radeonsi")
-hl.env("AQ_DRM_DEVICES", "/dev/dri/renderD128") -- AMD RX 7700 XT force render node
+-- GPU Cihaz Yolu (KRİTİK)
+-- card1 = KMS-capable cihaz (ekran yönetimi için zorunlu)
+-- renderD128 = render node (sadece compute/render, KMS yapamaz → crash)
+hl.env("AQ_DRM_DEVICES", "/dev/dri/card1")
 
--- Monitor Configuration
+-- Monitor Configuration (ASUS ROG Strix XG27ACS — 2560x1440@180Hz)
 hl.monitor({
     output   = "desc:ASUSTek COMPUTER INC XG27ACS SBLMTF097654",
     mode     = "2560x1440@180",
     position = "auto",
     scale    = "1",
+    vrr      = 1,  -- FreeSync / Adaptive Sync
 })
 
--- General Input Config
+-- Input Configuration
 hl.config({
     input = {
         kb_layout = "tr",
@@ -23,12 +23,7 @@ hl.config({
         sensitivity = 0,
         accel_profile = "flat",
     },
-    general = {
-        gaps_in = 5,
-        gaps_out = 10,
-        border_size = 2,
-    },
     cursor = {
-        no_hardware_cursors = false,
-    }
+        no_hardware_cursors = true,  -- AMD RDNA3: cursor glitch ve login loop önlemi
+    },
 })

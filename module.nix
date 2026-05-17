@@ -10,8 +10,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Nix Store'u bypass eden "Gerçek Live-Edit" sihri
-    # Bu sayede Projects klasöründeki her değişiklik anında aktif olur.
-    home.file.".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/xmrah/Projects/nixos-hyprland-lua/lua";
+    # Home Manager'ın dosya yönetimini devre dışı bıraktık.
+    # Kullanıcı /home/xmrah/Projects/nixos-hyprland-lua/lua dizinini 
+    # manuel olarak ~/.config/hypr yoluna symlinklemelidir.
+    # Bu sayede Nix Store çakışmaları ve Login Loop'lar engellenir.
   };
 }

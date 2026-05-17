@@ -10,7 +10,7 @@ local user_home = os.getenv("HOME")
                or ("/home/" .. (os.getenv("USER") or "xmrah"))
 
 local function load_module(name)
-    local path = user_home .. "/.config/hypr/" .. name .. ".lua"
+    local path = user_home .. "/.config/hypr/lua/" .. name .. ".lua"
     -- Check if file exists before dofile
     local f = io.open(path, "r")
     if f then

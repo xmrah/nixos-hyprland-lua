@@ -6,7 +6,7 @@ local mainMod = "SUPER"
 -- [ Applications ]
 hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. "+Q",      hl.dsp.window.close())
-hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("hyprctl dispatch exit"))
+hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("uwsm stop"))
 hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("dolphin"))
 hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("wofi --show drun"))
 hl.bind(mainMod .. "+V",      hl.dsp.window.float({ action = "toggle" }))

@@ -1,7 +1,9 @@
 -- Autostart Services
+-- NOT: dbus-update-activation-environment ve systemctl import-environment
+-- satırları UWSM tarafından otomatik yönetildiği için buradan kaldırıldı.
+-- Çift çağrı hyprland-session.target'ı bozuyordu.
+
 hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
     hl.exec_cmd("swww-daemon")
     hl.exec_cmd("waybar")
     hl.exec_cmd("nm-applet --indicator")
