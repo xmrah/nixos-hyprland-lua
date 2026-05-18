@@ -71,11 +71,10 @@ hl.config({
 -- ═══════════════════════════════════════════
 hl.config({
     layerrule = {
-        -- Waybar — üstten kayar, glassmorphism blur
-        "animation slide, waybar",
-        "blur, waybar",
-        "blurpopups, waybar",
-        "ignorezero, waybar",
+        -- Sovereign Bar (Quickshell) — üstten kayar, glassmorphism blur
+        "animation slide, sovereign-bar",
+        "blur, sovereign-bar",
+        "ignorezero, sovereign-bar",
 
         -- SwayNC — sağdan/fade animasyonu
         "animation slide, swaync-control-center",

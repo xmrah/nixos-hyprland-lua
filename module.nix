@@ -36,7 +36,7 @@ in {
   config = mkIf cfg.enable {
 
     # ── Live-edit symlink'ler ──────────────────────────────────────────────
-    # HM rebuild gerekmeden lua dosyaları anında etkinleşir.
+    # HM rebuild gerekmeden lua ve quickshell dosyaları anında etkinleşir.
     xdg.configFile."hypr/lua".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/lua";
 
@@ -45,6 +45,10 @@ in {
 
     xdg.configFile."hypr/hyprlock.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hyprlock.conf";
+
+    # Quickshell — live-edit (QML değişiklikleri yeniden başlatmada aktif)
+    xdg.configFile."quickshell".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/quickshell";
 
     xdg.configFile."wofi/style.css".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/style.css";
@@ -60,7 +64,24 @@ in {
       HYPR_KB_VARIANT=${cfg.keyboard.variant}
     '';
 
-    # ── Bildirim daemon — swaync ───────────────────────────────────────────
+    # ── Sovereign Shell — quickshell ──────────────────────────────────────
+    systemd.user.services.quickshell = {
+      Unit = {
+        Description          = "Quickshell — Sovereign Desktop Shell";
+        PartOf               = [ "graphical-session.target" ];
+        After                = [ "graphical-session.target" ];
+        ConditionEnvironment = "WAYLAND_DISPLAY";
+      };
+      Service = {
+        Type       = "simple";
+        ExecStart  = "${pkgs.quickshell}/bin/quickshell";
+        Restart    = "on-failure";
+        RestartSec = "2s";
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
+
+    # ── Bildirim daemon — swaync (quickshell bildirimler hazır olana kadar) ─
     systemd.user.services.swaync = {
       Unit = {
         Description          = "SwayNotificationCenter";
@@ -82,6 +103,9 @@ in {
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
     # Kullanıcının home.packages'ına dokunmasına gerek kalmaz.
     home.packages = with pkgs; [
+      # Sovereign Shell
+      quickshell
+
       # Geliştirici araçları
       lua-language-server
       lua
