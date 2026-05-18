@@ -46,6 +46,12 @@ in {
     xdg.configFile."hypr/hyprlock.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hyprlock.conf";
 
+    xdg.configFile."wofi/style.css".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/style.css";
+
+    xdg.configFile."wofi/config".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/config";
+
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
     # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
