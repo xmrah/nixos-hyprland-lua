@@ -102,3 +102,23 @@ hl.config({
         },
     },
 })
+
+-- ═══════════════════════════════════════════
+-- 4. HYPREXPo PLUGIN (Workspace Overview)
+-- ═══════════════════════════════════════════
+hl.config({
+    plugin = {
+        hyprexpo = {
+            columns          = 3,
+            gap_size         = 8,
+            bg_col           = "rgba(1e1e2e99)",   -- base + yarı şeffaf
+            workspace_method = "first 1",
+
+            -- Touchpad gesture (3 parmak yukarı = genel bakış)
+            enable_gesture   = true,
+            gesture_fingers  = 3,
+            gesture_distance = 300,
+            gesture_positive = true,
+        },
+    },
+})
