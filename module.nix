@@ -44,10 +44,12 @@ in {
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/lua/hyprland.lua";
 
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
-    home.sessionVariables = {
-      HYPR_KB_LAYOUT  = cfg.keyboard.layout;
-      HYPR_KB_VARIANT = cfg.keyboard.variant;
-    };
+    # home.sessionVariables shell profile'a yazar, UWSM okumaz.
+    # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
+    xdg.configFile."environment.d/hyprland-kbd.conf".text = ''
+      HYPR_KB_LAYOUT=${cfg.keyboard.layout}
+      HYPR_KB_VARIANT=${cfg.keyboard.variant}
+    '';
 
     # ── Bildirim daemon — swaync ───────────────────────────────────────────
     systemd.user.services.swaync = {
