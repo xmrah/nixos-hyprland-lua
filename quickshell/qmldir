@@ -1,1 +1,9 @@
 singleton Colors 1.0 Colors.qml
+Bar 1.0 Bar.qml
+Workspaces 1.0 Workspaces.qml
+Clock 1.0 Clock.qml
+SysInfo 1.0 SysInfo.qml
+Volume 1.0 Volume.qml
+Network 1.0 Network.qml
+Tray 1.0 Tray.qml
+Power 1.0 Power.qml

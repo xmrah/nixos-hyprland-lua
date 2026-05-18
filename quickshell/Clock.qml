@@ -1,50 +1,44 @@
-// Sovereign Clock — Tıklanabilir saat/tarih toggle
 import QtQuick
 import Quickshell
 
 Rectangle {
     id: root
-
     property bool showDate: false
 
-    implicitHeight: 44
-    implicitWidth:  timeText.implicitWidth + 44
-    radius:         14
-    color:          Colors.glass
-    border.color:   hovered.containsMouse
-        ? Qt.rgba(0.980, 0.702, 0.529, 0.45)
-        : Qt.rgba(0.980, 0.702, 0.529, 0.20)
+    implicitHeight: 30
+    implicitWidth:  label.implicitWidth + 28
+    radius:         10
+    color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
+    border.color:   hov.containsMouse
+        ? Qt.rgba(0.980, 0.702, 0.529, 0.40)
+        : Qt.rgba(0.980, 0.702, 0.529, 0.15)
     border.width: 1
-
     Behavior on border.color { ColorAnimation { duration: 150 } }
 
     Text {
-        id: timeText
+        id: label
         anchors.centerIn: parent
-        text:           "  " + Qt.formatDateTime(new Date(), "hh:mm")
-        font.pixelSize: 15
-        font.weight:    Font.Black
-        color:          Colors.peach
-        letterSpacing:  0.5
+        font.family:      "JetBrainsMono Nerd Font"
+        font.pixelSize:   15
+        font.weight:      Font.Bold
+        font.letterSpacing: 0.5
+        color:            "#fab387"
     }
 
-    // Dakikada bir güncelle
     Timer {
-        interval: 1000
-        running:  !root.showDate
-        repeat:   true
-        onTriggered: timeText.text = "  " + Qt.formatDateTime(new Date(), "hh:mm")
+        interval: 10000; running: true; repeat: true; triggeredOnStart: true
+        onTriggered: label.text = root.showDate
+            ? Qt.formatDateTime(new Date(), "ddd d MMM")
+            : Qt.formatDateTime(new Date(), "hh:mm")
     }
 
-    // Tıklayınca saat ↔ tarih toggle
+    HoverHandler { id: hov }
     TapHandler {
         onTapped: {
             root.showDate = !root.showDate
-            timeText.text = root.showDate
-                ? Qt.formatDateTime(new Date(), "  ddd, d MMM")
-                : "  " + Qt.formatDateTime(new Date(), "hh:mm")
+            label.text = root.showDate
+                ? Qt.formatDateTime(new Date(), "ddd d MMM")
+                : Qt.formatDateTime(new Date(), "hh:mm")
         }
     }
-
-    HoverHandler { id: hovered }
 }

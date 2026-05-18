@@ -1,76 +1,75 @@
-// Sovereign Workspaces — Hyprland IPC ile workspace göstergesi
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 
 Rectangle {
     id: root
-
-    implicitHeight: 44
-    implicitWidth:  wsRow.implicitWidth + 16
-    radius:         14
-    color:          Colors.glass
-    border.color:   Colors.glassBorder
+    implicitHeight: 30
+    implicitWidth:  row.implicitWidth + 14
+    radius:         10
+    color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
+    border.color:   Qt.rgba(1, 1, 1, 0.07)
     border.width:   1
 
+    readonly property int activeId: Hyprland.focusedMonitor?.activeWorkspace?.id ?? 1
+
+    function isOccupied(id) {
+        for (let i = 0; i < Hyprland.workspaces.length; i++) {
+            if (Hyprland.workspaces[i].id === id && Hyprland.workspaces[i].windows > 0)
+                return true
+        }
+        return false
+    }
+
     Row {
-        id: wsRow
+        id: row
         anchors.centerIn: parent
-        spacing: 3
+        spacing: 6
 
         Repeater {
-            model: Hyprland.workspaces
+            model: 9
 
-            delegate: Rectangle {
+            delegate: Item {
                 id: btn
-                required property HyprlandWorkspace modelData
+                readonly property int wsId:      modelData + 1
+                readonly property bool isActive:  wsId === root.activeId
+                readonly property bool occupied:  root.isOccupied(wsId)
 
-                readonly property bool isActive:    modelData.id === (Hyprland.focusedMonitor?.activeWorkspace?.id ?? -1)
-                readonly property bool hasWindows:  modelData.windows > 0
-
-                implicitWidth:  isActive ? 34 : 28
-                implicitHeight: 34
-                radius: 9
-
-                color: isActive
-                    ? Qt.rgba(0.490, 0.812, 1.0,  0.18)
-                    : hasWindows
-                        ? Qt.rgba(1.0,   1.0,   1.0,  0.05)
-                        : "transparent"
+                implicitWidth:  isActive ? 24 : 8
+                implicitHeight: 30
 
                 Behavior on implicitWidth { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
-                Behavior on color        { ColorAnimation   { duration: 150 } }
 
-                // Workspace ID / icon
-                Text {
-                    anchors.centerIn: parent
-                    text:         btn.modelData.id
-                    font.pixelSize: btn.isActive ? 13 : 11
-                    font.weight:    btn.isActive ? Font.Bold : Font.Normal
-                    color:          btn.isActive ? Colors.cyan : Colors.overlay0
-
-                    Behavior on color          { ColorAnimation  { duration: 150 } }
-                    Behavior on font.pixelSize { NumberAnimation { duration: 150 } }
-                }
-
-                // Aktif workspace alt çizgisi (cyan)
                 Rectangle {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom:           parent.bottom
-                    anchors.bottomMargin:     4
-                    width:  btn.isActive ? 14 : 0
-                    height: 2
-                    radius: 1
-                    color:  Colors.cyan
+                    anchors.centerIn: parent
+                    width:  btn.isActive ? 24 : (btn.occupied ? 7 : 5)
+                    height: btn.isActive ? 20 : (btn.occupied ? 7 : 5)
+                    radius: btn.isActive ? 6 : 10
 
-                    Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
+                    color: btn.isActive  ? Qt.rgba(0.490, 0.812, 1.0, 0.22)
+                         : btn.occupied  ? Qt.rgba(0.490, 0.812, 1.0, 0.50)
+                         :                 Qt.rgba(1, 1, 1, 0.15)
+
+                    border.color: btn.isActive ? Qt.rgba(0.490, 0.812, 1.0, 0.65) : "transparent"
+                    border.width: btn.isActive ? 1 : 0
+
+                    Behavior on width        { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+                    Behavior on height       { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+                    Behavior on color        { ColorAnimation  { duration: 150 } }
+                    Behavior on border.color { ColorAnimation  { duration: 150 } }
+
+                    Text {
+                        anchors.centerIn: parent
+                        visible:          btn.isActive
+                        text:             btn.wsId
+                        font.family:      "JetBrainsMono Nerd Font"
+                        font.pixelSize:   11
+                        font.weight:      Font.Bold
+                        color:            "#7dcfff"
+                    }
                 }
 
-                HoverHandler { id: wsHover }
-
-                TapHandler {
-                    onTapped: Hyprland.dispatch("workspace " + btn.modelData.id)
-                }
+                TapHandler { onTapped: Hyprland.dispatch("workspace " + btn.wsId) }
             }
         }
     }

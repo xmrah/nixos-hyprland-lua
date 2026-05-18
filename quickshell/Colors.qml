@@ -1,5 +1,6 @@
 pragma Singleton
 import Quickshell
+import QtQuick
 
 // Sovereign Color Palette
 // Catppuccin Mocha + Material You (colors.lua ile senkron)
