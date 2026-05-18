@@ -15,6 +15,8 @@ hl.monitor({
 })
 
 -- Input Configuration
+-- kb_layout: module.nix'teki keyboard.layout opsiyonundan gelir (HYPR_KB_LAYOUT),
+-- ayarlanmamışsa "us" fallback'i kullanılır.
 hl.config({
     input = {
         kb_layout = "tr",

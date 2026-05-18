@@ -1,8 +1,9 @@
 -- Sovereign Theme: Glassmorphism + Material You
 -- AMD RX 7700 XT / 180Hz Optimized
+-- Renkler colors.lua'dan gelir (global Colors tablosu)
 
 -- ═══════════════════════════════════════════
--- 1. RENK PALETİ ve GENEL YAPI
+-- 1. GENEL YAPI
 -- ═══════════════════════════════════════════
 hl.config({
     general = {
@@ -13,9 +14,9 @@ hl.config({
         resize_on_border = true,
         extend_border_grab_area = 15,
         col = {
-            -- Material You: Cyan → Purple gradient
-            active_border = { colors = {"rgba(7dcfffee)", "rgba(c27afaee)"}, angle = 45 },
-            inactive_border = "rgba(45475a88)",
+            -- Material You: Cyan → Purple gradient (colors.lua)
+            active_border = { colors = { Colors.active_border_a, Colors.active_border_b }, angle = 45 },
+            inactive_border = Colors.inactive_border,
         },
     },
     dwindle = {
@@ -54,8 +55,8 @@ hl.config({
             enabled = true,
             range = 20,
             render_power = 3,
-            color = "rgba(1a1a2eaa)",
-            color_inactive = "rgba(1a1a2e55)",
+            color = Colors.shadow,
+            color_inactive = Colors.shadow_inactive,
         },
     },
 })

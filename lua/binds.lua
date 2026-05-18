@@ -54,8 +54,7 @@ hl.bind(mainMod .. "+mouse_up",   hl.dsp.exec_cmd("hyprctl dispatch workspace e-
 hl.bind(mainMod .. "+mouse_down", hl.dsp.exec_cmd("hyprctl dispatch workspace e+1"))
 
 -- Özel Workspace (Scratchpad)
-hl.bind(mainMod .. "+S",       hl.dsp.exec_cmd("hyprctl dispatch togglespecialworkspace magic"))
-hl.bind(mainMod .. "+SHIFT+S", hl.dsp.exec_cmd("hyprctl dispatch movetoworkspace special:magic"))
+hl.bind(mainMod .. "+S", hl.dsp.exec_cmd("hyprctl dispatch togglespecialworkspace magic"))
 
 -- ═══════════════════════════════════════════
 -- 5. FARE
@@ -85,10 +84,10 @@ hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl set 5%-"),       
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ
 -- ═══════════════════════════════════════════
--- Print: Alan seç → panoya kopyala
-hl.bind("Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | wl-copy"))
--- SUPER+Print: Tüm ekran → dosyaya kaydet
-hl.bind(mainMod .. "+Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"))
--- SUPER+SHIFT+Print: Alan seç → düzenle (swappy)
-hl.bind(mainMod .. "+SHIFT+Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | swappy -f -"))
+-- SUPER+SHIFT+S: Alan seç → panoya kopyala
+hl.bind(mainMod .. "+SHIFT+S", hl.dsp.exec_cmd("sh -c 'grim -g \"$(slurp)\" - | wl-copy && notify-send \"Screenshot\" \"Panoya kopyalandı\" -t 2000'"))
+-- SUPER+ALT+S: Tüm ekran → dosyaya kaydet
+hl.bind(mainMod .. "+ALT+S", hl.dsp.exec_cmd("sh -c 'FILE=~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png; grim \"$FILE\" && notify-send \"Screenshot\" \"$FILE\" -t 2000'"))
+-- SUPER+CTRL+S: Alan seç → düzenle (swappy)
+hl.bind(mainMod .. "+CTRL+S", hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | swappy -f -"))
 

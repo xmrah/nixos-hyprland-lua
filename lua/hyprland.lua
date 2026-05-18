@@ -5,30 +5,32 @@
 if not hl then return end
 
 -- Dinamik ve Güvenli Yol Tespiti
-local user_home = os.getenv("HOME") 
-               or os.getenv("XDG_CONFIG_HOME") 
-               or ("/home/" .. (os.getenv("USER") or "xmrah"))
+local user_home = os.getenv("HOME")
+    or os.getenv("XDG_CONFIG_HOME")
+               or ("/home/" .. (os.getenv("USER") or "unknown"))
+
+local lua_dir = user_home .. "/.config/hypr/lua/"
 
 local function load_module(name)
-    local path = user_home .. "/.config/hypr/lua/" .. name .. ".lua"
-    -- Check if file exists before dofile
+    local path = lua_dir .. name .. ".lua"
     local f = io.open(path, "r")
     if f then
         f:close()
-        local success, err = pcall(dofile, path)
-        if not success then
-            print("Error loading " .. name .. ": " .. err)
+        local ok, err = pcall(dofile, path)
+        if not ok then
+            io.stderr:write("[hyprland.lua] ERROR loading '" .. name .. "': " .. err .. "\n")
         end
     else
-        print("Module not found: " .. name .. " at " .. path)
+        io.stderr:write("[hyprland.lua] Module not found: " .. path .. "\n")
     end
 end
 
--- Yükleme Sırası (Order is crucial)
-load_module("autostart")
-load_module("hardware")
-load_module("theme")
-load_module("rules")
-load_module("binds")
+-- Yükleme Sırası (colors en önce — diğer modüller Colors global'ini kullanır)
+load_module("colors")      -- Renk paleti (global Colors tablosu)
+load_module("hardware")    -- Monitor, input, GPU
+load_module("autostart")   -- UWSM uyumlu servisler
+load_module("theme")       -- Glassmorphism, animasyonlar
+load_module("rules")       -- Window/layer kuralları
+load_module("binds")       -- Keybinding'ler
 
-print("Hyprland Sovereign Framework initialized at " .. user_home)
+io.stderr:write("[hyprland.lua] Sovereign Framework initialized — " .. user_home .. "\n")

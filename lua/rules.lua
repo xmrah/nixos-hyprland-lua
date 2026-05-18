@@ -23,11 +23,14 @@ hl.config({
         "float, class:^(mpv)$",
         "float, class:^(imv)$",
         "float, class:^(org.gnome.Calculator)$",
+    },
+})
 
 -- ═══════════════════════════════════════════
 -- 2. WORKSPACE ATAMALARI
 -- ═══════════════════════════════════════════
-
+hl.config({
+    windowrulev2 = {
         -- Tarayıcılar → Workspace 1
         "workspace 1, class:^(chromium)$",
         "workspace 1, class:^(zen)$",
@@ -49,11 +52,14 @@ hl.config({
         -- Müzik → Workspace 9
         "workspace 9, class:^(Spotify)$",
         "workspace 9, title:^(Spotify)$",
+    },
+})
 
 -- ═══════════════════════════════════════════
 -- 3. OPASİTE (Glassmorphism derinliği)
 -- ═══════════════════════════════════════════
-
+hl.config({
+    windowrulev2 = {
         "opacity 0.92 0.88, class:^(kitty)$",
         "opacity 0.95 0.90, class:^(code)$",
         "opacity 0.95 0.90, class:^(Code)$",
@@ -73,6 +79,7 @@ hl.config({
         "blur, swaync-notification-window",
         "ignorezero, swaync-control-center",
         "ignorezero, swaync-notification-window",
+
         "blur, wofi",
         "ignorezero, wofi",
     },
