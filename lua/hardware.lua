@@ -7,6 +7,8 @@
 hl.env("AQ_DRM_DEVICES", "/dev/dri/card1")
 
 -- Monitor Configuration (ASUS ROG Strix XG27ACS — 2560x1440@180Hz)
+-- !! KİŞİSEL AYAR: desc satırını kendinize göre değiştirin.
+-- !! Monitör tanımlayıcınızı bulmak için: hyprctl monitors
 hl.monitor({
     output   = "desc:ASUSTek COMPUTER INC XG27ACS SBLMTF097654",
     mode     = "2560x1440@180",
@@ -15,11 +17,12 @@ hl.monitor({
 })
 
 -- Input Configuration
--- kb_layout: module.nix'teki keyboard.layout opsiyonundan gelir (HYPR_KB_LAYOUT),
--- ayarlanmamışsa "us" fallback'i kullanılır.
+-- kb_layout: module.nix keyboard.layout opsiyonundan HYPR_KB_LAYOUT env var olarak gelir.
+-- Ayarlanmamışsa "us" kullanılır.
 hl.config({
     input = {
-        kb_layout = "tr",
+        kb_layout  = os.getenv("HYPR_KB_LAYOUT")  or "us",
+        kb_variant = os.getenv("HYPR_KB_VARIANT") or "",
         follow_mouse = 1,
         sensitivity = 0,
         accel_profile = "flat",
