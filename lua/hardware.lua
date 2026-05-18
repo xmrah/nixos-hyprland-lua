@@ -12,7 +12,6 @@ hl.monitor({
     mode     = "2560x1440@180",
     position = "auto",
     scale    = "1",
-    vrr      = 1,  -- FreeSync / Adaptive Sync
 })
 
 -- Input Configuration

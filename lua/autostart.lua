@@ -6,10 +6,9 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.on("hyprland.start", function()
-    -- Wallpaper Engine
+    -- Wallpaper Engine + ilk görüntü (0.11+ daemon socket bekler)
     hl.exec_cmd("swww-daemon")
-
-
+    hl.exec_cmd("sleep 0.3 && swww img ~/.config/hypr/wallpaper.jpg --transition-type fade --transition-duration 1 --transition-fps 90")
 
     -- Ağ Yönetimi
     hl.exec_cmd("nm-applet --indicator")
