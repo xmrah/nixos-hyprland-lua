@@ -43,6 +43,9 @@ in {
     xdg.configFile."hypr/hyprland.lua".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/lua/hyprland.lua";
 
+    xdg.configFile."hypr/hyprlock.conf".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hyprlock.conf";
+
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
     # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
