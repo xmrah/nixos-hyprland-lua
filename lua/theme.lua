@@ -70,24 +70,35 @@ hl.config({
 
         -- Bezier eğrileri
         bezier = {
-            "smooth,   0.25, 0.1,  0.25, 1",
+            "smooth,    0.25, 0.1,  0.25, 1",
             "overshot,  0.05, 0.9,  0.1,  1.05",
             "easeOut,   0.16, 1,    0.3,  1",
             "easeInOut, 0.45, 0,    0.55, 1",
-            "spring,    0.1,  0.8,  0.2,  1.1",
+            "spring,    0.1,  0.8,  0.2,  1.1",   -- yay etkisi (doğal his)
+            "popIn,     0.34, 1.56, 0.64, 1",     -- popup overshoot
         },
 
-        -- Animasyon tanımları
+        -- Animasyon tanımları (180Hz için kısa süreler)
         animation = {
-            "windows,     1, 5, smooth",
-            "windowsIn,   1, 5, overshot",
-            "windowsOut,  1, 4, easeOut",
-            "fade,        1, 4, smooth",
-            "fadeIn,      1, 3, easeOut",
-            "fadeOut,     1, 3, easeInOut",
-            "workspaces,  1, 4, overshot",
-            "border,      1, 8, smooth",
-            "borderangle, 1, 30, smooth, loop",  -- Dönen gradient border
+            -- Pencere animasyonları — spring bezier ile doğal his
+            "windows,          1, 4, spring",
+            "windowsIn,        1, 4, overshot, slide",
+            "windowsOut,       1, 3, easeOut,  slide",
+            "windowsMove,      1, 4, spring",
+
+            -- Fade
+            "fade,             1, 3, smooth",
+            "fadeIn,           1, 2, easeOut",
+            "fadeOut,          1, 2, easeInOut",
+            "fadeLayers,       1, 2, smooth",
+
+            -- Workspace geçişleri
+            "workspaces,       1, 4, overshot",
+            "specialWorkspace, 1, 4, overshot, slidevert",  -- scratchpad üstten iner
+
+            -- Border animasyonları
+            "border,           1, 8, smooth",
+            "borderangle,      1, 30, smooth, loop",  -- Dönen gradient border
         },
     },
 })

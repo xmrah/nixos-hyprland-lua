@@ -71,15 +71,22 @@ hl.config({
 -- ═══════════════════════════════════════════
 hl.config({
     layerrule = {
+        -- Waybar — üstten kayar, glassmorphism blur
+        "animation slide, waybar",
         "blur, waybar",
         "blurpopups, waybar",
         "ignorezero, waybar",
 
+        -- SwayNC — sağdan/fade animasyonu
+        "animation slide, swaync-control-center",
+        "animation fade, swaync-notification-window",
         "blur, swaync-control-center",
         "blur, swaync-notification-window",
         "ignorezero, swaync-control-center",
         "ignorezero, swaync-notification-window",
 
+        -- Wofi launcher — ortadan açılır (popin)
+        "animation popin 80%, wofi",
         "blur, wofi",
         "ignorezero, wofi",
     },
