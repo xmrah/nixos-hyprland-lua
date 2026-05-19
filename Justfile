@@ -5,7 +5,7 @@
 default:
     @just --list
 
-# Tüm değişiklikleri anlık olarak Codeberg'e gönder
+# Tüm değişiklikleri Codeberg + GitHub'a gönder
 sync message="framework update":
     just check
     git add .
