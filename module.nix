@@ -46,6 +46,9 @@ in {
     xdg.configFile."hypr/hyprlock.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hyprlock.conf";
 
+    xdg.configFile."hypr/hypridle.conf".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hypridle.conf";
+
     # Quickshell — live-edit (QML değişiklikleri yeniden başlatmada aktif)
     xdg.configFile."quickshell".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/quickshell";
