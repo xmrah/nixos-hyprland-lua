@@ -62,10 +62,10 @@ in {
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
     # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
-    xdg.configFile."environment.d/hyprland-kbd.conf".text = ''
-      HYPR_KB_LAYOUT=${cfg.keyboard.layout}
-      HYPR_KB_VARIANT=${cfg.keyboard.variant}
-    '';
+    xdg.configFile."environment.d/hyprland-kbd.conf".text =
+      "HYPR_KB_LAYOUT=${cfg.keyboard.layout}\n"
+      + lib.optionalString (cfg.keyboard.variant != "")
+        "HYPR_KB_VARIANT=${cfg.keyboard.variant}\n";
 
     # ── Sovereign Shell — quickshell ──────────────────────────────────────
     systemd.user.services.quickshell = {
