@@ -74,13 +74,11 @@ hl.bind(mainMod .. "+N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))
 
 -- ═══════════════════════════════════════════
--- 7. MULTİMEDYA
+-- 7. MULTİMEDYA (SwayOSD Katmanı)
 -- ═══════════════════════════════════════════
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true, locked = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { repeating = true, locked = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),    { locked = true })
-hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl set 5%+"),                         { repeating = true, locked = true })
-hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl set 5%-"),                         { repeating = true, locked = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"), { repeating = true, locked = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"), { repeating = true, locked = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
 
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ

@@ -84,6 +84,9 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
+    # ── Ses OSD — swayosd ─────────────────────────────────────────────────
+    services.swayosd.enable = true;
+
     # ── Clipboard geçmişi daemon — cliphist ───────────────────────────────
     # binds.lua SUPER+C: cliphist list | wofi --dmenu | cliphist decode | wl-copy
     systemd.user.services.cliphist = {
