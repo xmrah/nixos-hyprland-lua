@@ -59,6 +59,12 @@ in {
     xdg.configFile."wofi/config".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/config";
 
+    xdg.configFile."swaync/config.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/swaync/config.json";
+
+    xdg.configFile."swaync/style.css".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/swaync/style.css";
+
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
     # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
