@@ -11,7 +11,8 @@ hl.bind(mainMod .. "+Q",      hl.dsp.window.close())
 hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("uwsm stop"))
 hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("dolphin"))
 hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("wofi --show drun"))
-hl.bind(mainMod .. "+C",      hl.dsp.exec_cmd("chromium"))
+hl.bind(mainMod .. "+T",      hl.dsp.exec_cmd("chromium"))
+hl.bind(mainMod .. "+C",      hl.dsp.exec_cmd("cliphist list | wofi --dmenu -p 'Clipboard' | cliphist decode | wl-copy"))
 
 -- ═══════════════════════════════════════════
 -- 2. PENCERE YÖNETİMİ

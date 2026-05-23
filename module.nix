@@ -84,6 +84,24 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
+    # ── Clipboard geçmişi daemon — cliphist ───────────────────────────────
+    # binds.lua SUPER+C: cliphist list | wofi --dmenu | cliphist decode | wl-copy
+    systemd.user.services.cliphist = {
+      Unit = {
+        Description          = "Clipboard history daemon (cliphist)";
+        PartOf               = [ "graphical-session.target" ];
+        After                = [ "graphical-session.target" ];
+        ConditionEnvironment = "WAYLAND_DISPLAY";
+      };
+      Service = {
+        Type       = "simple";
+        ExecStart  = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";
+        Restart    = "on-failure";
+        RestartSec = "3s";
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
+
     # ── Bildirim daemon — swaync (quickshell bildirimler hazır olana kadar) ─
     systemd.user.services.swaync = {
       Unit = {
@@ -144,6 +162,9 @@ in {
 
       # Ağ yönetimi (autostart.lua: nm-applet)
       networkmanagerapplet
+
+      # Clipboard geçmişi (binds.lua: SUPER+C)
+      cliphist
     ];
   };
 }
