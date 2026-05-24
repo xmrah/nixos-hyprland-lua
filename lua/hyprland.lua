@@ -28,6 +28,7 @@ end
 -- Yükleme Sırası (colors en önce — diğer modüller Colors global'ini kullanır)
 load_module("colors")      -- Renk paleti (global Colors tablosu)
 load_module("hardware")    -- Monitor, input, GPU
+load_module("plugins")     -- Hyprland eklentileri (hyprexpo vb.)
 load_module("autostart")   -- UWSM uyumlu servisler
 load_module("theme")       -- Glassmorphism, animasyonlar
 load_module("rules")       -- Window/layer kuralları

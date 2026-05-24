@@ -70,6 +70,7 @@ Rectangle {
                 }
 
                 TapHandler { onTapped: Hyprland.dispatch("workspace " + btn.wsId) }
+                TapHandler { acceptedButtons: Qt.RightButton; onTapped: Hyprland.dispatch("hyprexpo:expo toggle") }
             }
         }
     }

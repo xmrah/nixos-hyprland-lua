@@ -129,6 +129,12 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
+    # ── Hyprland Plugin Symlink'leri ───────────────────────────────────────
+    # .so path Nix store'da değişir — sabit symlink üzerinden Lua okur.
+    # plugins.lua bu path'leri os.getenv("HOME") ile oluşturur.
+    home.file.".local/share/hypr-plugins/hyprexpo.so".source =
+      "${pkgs.hyprlandPlugins.hyprexpo}/lib/libhyprexpo.so";
+
     # ── Paketler ───────────────────────────────────────────────────────────
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
     # Kullanıcının home.packages'ına dokunmasına gerek kalmaz.
