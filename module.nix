@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   inherit (lib) mkIf mkEnableOption mkOption types;
@@ -130,10 +130,12 @@ in {
     };
 
     # ── Hyprland Plugin Symlink'leri ───────────────────────────────────────
-    # .so path Nix store'da değişir — sabit symlink üzerinden Lua okur.
-    # plugins.lua bu path'leri os.getenv("HOME") ile oluşturur.
+    # hyprexpo, çalışan Hyprland ile aynı versiyona göre derlenmeli.
+    # inputs.hyprland = v0.55.0 flake → pkgs.hyprlandPlugins.hyprexpo override
     home.file.".local/share/hypr-plugins/hyprexpo.so".source =
-      "${pkgs.hyprlandPlugins.hyprexpo}/lib/libhyprexpo.so";
+      "${(pkgs.hyprlandPlugins.hyprexpo.override {
+        hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      })}/lib/libhyprexpo.so";
 
     # ── Paketler ───────────────────────────────────────────────────────────
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
