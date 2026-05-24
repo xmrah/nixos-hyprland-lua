@@ -7,9 +7,9 @@ Rectangle {
     property int cpuUsage: 0
     property int ramUsage: 0
 
-    implicitHeight: 30
+    implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 20
-    radius:         10
+    radius:         Appearance.size.radiusSm
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   Qt.rgba(1, 1, 1, 0.07)
     border.width:   1
@@ -32,7 +32,7 @@ Rectangle {
                 text: root.cpuUsage + "%"
                 font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13; font.weight: Font.DemiBold
                 color: root.cpuUsage > 90 ? "#f38ba8" : root.cpuUsage > 70 ? "#f9e2af" : "#89dceb"
-                Behavior on color { ColorAnimation { duration: 300 } }
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -52,7 +52,7 @@ Rectangle {
                 text: root.ramUsage + "%"
                 font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13; font.weight: Font.DemiBold
                 color: root.ramUsage > 90 ? "#f38ba8" : root.ramUsage > 75 ? "#f9e2af" : "#cba6f7"
-                Behavior on color { ColorAnimation { duration: 300 } }
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

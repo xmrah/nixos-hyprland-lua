@@ -7,13 +7,13 @@ Rectangle {
     property int  volume: 0
     property bool muted:  false
 
-    implicitHeight: 30
+    implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 20
-    radius:         12
+    radius:         Appearance.size.radius
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   Qt.rgba(0.976, 0.886, 0.686, muted ? 0.08 : 0.18)
     border.width:   1
-    Behavior on border.color { ColorAnimation { duration: 150 } }
+    Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }
 
     Row {
         id: row
@@ -28,7 +28,7 @@ Rectangle {
             font.family:    "JetBrainsMono Nerd Font"
             font.pixelSize: 16
             color:          root.muted ? "#45475a" : "#f9e2af"
-            Behavior on color { ColorAnimation { duration: 150 } }
+            Behavior on color { ColorAnimation { duration: Appearance.anim.fast.dur } }
             anchors.verticalCenter: parent.verticalCenter
         }
         Text {
@@ -37,7 +37,7 @@ Rectangle {
             font.pixelSize: 13
             font.weight:    Font.DemiBold
             color:          root.muted ? "#6c7086" : "#f9e2af"
-            Behavior on color { ColorAnimation { duration: 150 } }
+            Behavior on color { ColorAnimation { duration: Appearance.anim.fast.dur } }
             anchors.verticalCenter: parent.verticalCenter
         }
     }
@@ -59,10 +59,12 @@ Rectangle {
     Process { id: pavuctl; command: ["pavucontrol"]; running: false }
 
     Timer { interval: 3000; running: true; repeat: true; triggeredOnStart: true; onTriggered: if (!volProc.running) volProc.running = true }
-    TapHandler   { onTapped: pavuctl.running = true }
-    WheelHandler {
-        onWheel: event => {
-            if (event.angleDelta.y > 0 && !volUp.running)   volUp.running   = true
+    TapHandler { onTapped: pavuctl.running = true }
+    MouseArea {
+        anchors.fill:        parent
+        acceptedButtons:     Qt.NoButton
+        onWheel: wheel => {
+            if (wheel.angleDelta.y > 0 && !volUp.running)   volUp.running   = true
             else if (!volDown.running)                        volDown.running = true
         }
     }

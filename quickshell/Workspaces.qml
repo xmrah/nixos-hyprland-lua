@@ -4,9 +4,9 @@ import Quickshell.Hyprland
 
 Rectangle {
     id: root
-    implicitHeight: 30
+    implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 14
-    radius:         10
+    radius:         Appearance.size.radiusSm
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   Qt.rgba(1, 1, 1, 0.07)
     border.width:   1
@@ -38,7 +38,7 @@ Rectangle {
                 implicitWidth:  isActive ? 24 : 8
                 implicitHeight: 30
 
-                Behavior on implicitWidth { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+                Behavior on implicitWidth { NumberAnimation { duration: Appearance.anim.ws.dur; easing.type: Easing.OutCubic } }
 
                 Rectangle {
                     anchors.centerIn: parent
@@ -53,10 +53,10 @@ Rectangle {
                     border.color: btn.isActive ? Qt.rgba(0.490, 0.812, 1.0, 0.65) : "transparent"
                     border.width: btn.isActive ? 1 : 0
 
-                    Behavior on width        { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
-                    Behavior on height       { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
-                    Behavior on color        { ColorAnimation  { duration: 150 } }
-                    Behavior on border.color { ColorAnimation  { duration: 150 } }
+                    Behavior on width        { NumberAnimation { duration: Appearance.anim.ws.dur; easing.type: Easing.OutCubic } }
+                    Behavior on height       { NumberAnimation { duration: Appearance.anim.ws.dur; easing.type: Easing.OutCubic } }
+                    Behavior on color        { ColorAnimation  { duration: Appearance.anim.fast.dur } }
+                    Behavior on border.color { ColorAnimation  { duration: Appearance.anim.fast.dur } }
 
                     Text {
                         anchors.centerIn: parent

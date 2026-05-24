@@ -162,8 +162,8 @@ in {
       swappy
       wl-clipboard
 
-      # Parlaklık (binds.lua: XF86MonBrightness)
-      brightnessctl
+      # Parlaklık — DDC/CI üzerinden harici monitör kontrolü (binds.lua + Brightness.qml)
+      ddcutil
 
       # Bildirim
       swaynotificationcenter

@@ -89,9 +89,10 @@ hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl stop"),       { locked = tru
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- Parlaklık (swayosd-client — OSD göstergesiyle)
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --brightness raise"), { repeating = true, locked = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), { repeating = true, locked = true })
+-- Parlaklık (DDC/CI — harici monitör, /sys/class/backlight yok)
+-- NOT: repeating = true yok — ddcutil I2C flood edip kernel oops tetikler
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("ddcutil setvcp 10 + 5"), { locked = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("ddcutil setvcp 10 - 5"), { locked = true })
 
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ

@@ -5,15 +5,15 @@ Rectangle {
     id: root
     property bool showDate: false
 
-    implicitHeight: 30
+    implicitHeight: Appearance.size.widgetH
     implicitWidth:  label.implicitWidth + 28
-    radius:         10
+    radius:         Appearance.size.radiusSm
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   hov.containsMouse
         ? Qt.rgba(0.980, 0.702, 0.529, 0.40)
         : Qt.rgba(0.980, 0.702, 0.529, 0.15)
     border.width: 1
-    Behavior on border.color { ColorAnimation { duration: 150 } }
+    Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }
 
     Text {
         id: label
