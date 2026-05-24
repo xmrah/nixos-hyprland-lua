@@ -137,7 +137,7 @@ in {
         hyprexpo = pkgs.stdenv.mkDerivation {
           pname             = "hyprexpo";
           version           = "0.1-unstable";
-          src               = "${inputs.hyprland-plugins}/hyprexpo";
+          src               = inputs.hyprland-plugins + "/hyprexpo";
           nativeBuildInputs = with pkgs; [ cmake pkg-config ];
           buildInputs       = [ inputs.hyprland.packages.${pkgs.system}.hyprland ];
           installPhase = ''
