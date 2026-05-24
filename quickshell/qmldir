@@ -1,5 +1,8 @@
 singleton Appearance 1.0 Appearance.qml
 singleton Colors 1.0 Colors.qml
+singleton AudioService 1.0 AudioService.qml
+singleton BrightnessService 1.0 BrightnessService.qml
+Media 1.0 Media.qml
 Bar 1.0 Bar.qml
 Workspaces 1.0 Workspaces.qml
 Clock 1.0 Clock.qml

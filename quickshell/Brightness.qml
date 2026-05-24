@@ -1,10 +1,9 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 
+// Parlaklık gösterim bileşeni — tüm iş mantığı BrightnessService'te
 Rectangle {
     id: root
-    property int brightness: 0
 
     implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 20
@@ -20,45 +19,30 @@ Rectangle {
         spacing: 5
 
         Text {
-            text: root.brightness < 30 ? "󰃞"
-                : root.brightness < 70 ? "󰃟"
-                :                        "󰃠"
+            text: BrightnessService.brightness < 30 ? "󰃞"
+                : BrightnessService.brightness < 70 ? "󰃟"
+                :                                      "󰃠"
             font.family:    "JetBrainsMono Nerd Font"
-            font.pixelSize: 16
+            font.pixelSize: Appearance.size.iconSize
             color:          "#f9e2af"
             anchors.verticalCenter: parent.verticalCenter
         }
         Text {
-            text:           root.brightness + "%"
+            text:           BrightnessService.brightness + "%"
             font.family:    "JetBrainsMono Nerd Font"
-            font.pixelSize: 13
+            font.pixelSize: Appearance.size.textSize
             font.weight:    Font.DemiBold
             color:          "#f9e2af"
             anchors.verticalCenter: parent.verticalCenter
         }
     }
 
-    Process {
-        id: getProc
-        command: ["sh", "-c", "ddcutil getvcp 10 2>/dev/null | grep -oP 'current value =\\s*\\K[0-9]+'"]
-        running: false
-        stdout: SplitParser {
-            onRead: data => root.brightness = parseInt(data) || 0
-        }
-    }
-
-    Process { id: brightUp;   command: ["sh", "-c", "ddcutil setvcp 10 + 5"]; running: false; onExited: getProc.running = true }
-    Process { id: brightDown; command: ["sh", "-c", "ddcutil setvcp 10 - 5"]; running: false; onExited: getProc.running = true }
-
-    // DDC/CI yavaş — 10 saniyede bir güncelle
-    Timer { interval: 10000; running: true; repeat: true; triggeredOnStart: true; onTriggered: if (!getProc.running) getProc.running = true }
-
     MouseArea {
         anchors.fill:    parent
         acceptedButtons: Qt.NoButton
         onWheel: wheel => {
-            if (wheel.angleDelta.y > 0 && !brightUp.running)   brightUp.running   = true
-            else if (!brightDown.running)                        brightDown.running = true
+            if (wheel.angleDelta.y > 0) BrightnessService.increase()
+            else                         BrightnessService.decrease()
         }
     }
 }

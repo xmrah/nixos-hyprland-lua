@@ -27,6 +27,7 @@ WlrLayershell {
         spacing: 5
 
         Workspaces { Layout.alignment: Qt.AlignVCenter }
+        Media      { Layout.alignment: Qt.AlignVCenter }
         Item       { Layout.fillWidth: true }
         Clock      { Layout.alignment: Qt.AlignVCenter }
         Item       { Layout.fillWidth: true }
