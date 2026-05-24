@@ -129,27 +129,6 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
-    # ── Hyprland Plugin Symlink'leri ───────────────────────────────────────
-    # hyprexpo, çalışan Hyprland ile ABI uyumlu olmalı.
-    # inputs.hyprland-plugins: inputs.hyprland.follows = "hyprland" (v0.55.0)
-    home.file.".local/share/hypr-plugins/hyprexpo.so".source =
-      let
-        hyprexpo = pkgs.stdenv.mkDerivation {
-          pname             = "hyprexpo";
-          version           = "0.1-unstable";
-          src               = builtins.path { path = inputs.hyprland-plugins + "/hyprexpo"; name = "hyprexpo-source"; };
-          nativeBuildInputs = with pkgs; [ cmake pkg-config ];
-          buildInputs       = [ inputs.hyprland.packages.${pkgs.system}.hyprland ];
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out/lib
-            so=$(find . -name "libhyprexpo.so" | head -1)
-            [ -n "$so" ] && cp "$so" $out/lib/libhyprexpo.so || (echo "libhyprexpo.so bulunamadı" >&2; exit 1)
-            runHook postInstall
-          '';
-        };
-      in "${hyprexpo}/lib/libhyprexpo.so";
-
     # ── Paketler ───────────────────────────────────────────────────────────
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
     # Kullanıcının home.packages'ına dokunmasına gerek kalmaz.
