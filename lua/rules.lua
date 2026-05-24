@@ -44,6 +44,7 @@ hl.config({
         -- Kod Editörü → Workspace 4
         "workspace 4, class:^(code)$",
         "workspace 4, class:^(Code)$",
+        "workspace 4, class:^(codium)$",
 
         -- İletişim → Workspace 8
         "workspace 8, class:^(discord)$",
@@ -63,6 +64,7 @@ hl.config({
         "opacity 0.92 0.88, class:^(kitty)$",
         "opacity 0.95 0.90, class:^(code)$",
         "opacity 0.95 0.90, class:^(Code)$",
+        "opacity 0.95 0.90, class:^(codium)$",
     },
 })
 

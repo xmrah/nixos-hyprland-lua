@@ -76,9 +76,22 @@ hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))
 -- ═══════════════════════════════════════════
 -- 7. MULTİMEDYA (SwayOSD Katmanı)
 -- ═══════════════════════════════════════════
+-- fnmode=2: F tuşları varsayılan F1-F12, Fn+F → XF86 keysym'leri tetikler
+
+-- Ses
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"), { repeating = true, locked = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"), { repeating = true, locked = true })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
+
+-- Medya Kontrolü (playerctl)
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl stop"),       { locked = true })
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+-- Parlaklık (swayosd-client — OSD göstergesiyle)
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --brightness raise"), { repeating = true, locked = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), { repeating = true, locked = true })
 
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ

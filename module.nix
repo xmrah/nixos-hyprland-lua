@@ -174,6 +174,12 @@ in {
 
       # Clipboard geçmişi (binds.lua: SUPER+C)
       cliphist
+
+      # Medya kontrolü (binds.lua: XF86AudioPlay/Next/Prev/Stop)
+      playerctl
+
+      # Ses yönetimi (quickshell Volume.qml: tıkla → pavucontrol)
+      pavucontrol
     ];
   };
 }
