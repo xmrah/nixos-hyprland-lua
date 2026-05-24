@@ -26,9 +26,10 @@ WlrLayershell {
         }
         spacing: 5
 
-        Workspaces { Layout.alignment: Qt.AlignVCenter }
-        Media      { Layout.alignment: Qt.AlignVCenter }
-        Item       { Layout.fillWidth: true }
+        Workspaces    { Layout.alignment: Qt.AlignVCenter }
+        Media         { id: mediaWidget;   Layout.alignment: Qt.AlignVCenter }
+        ActiveWindow  { id: activeWidget; Layout.alignment: Qt.AlignVCenter; visible: activeWidget.hasContent && !mediaWidget.hasPlayer }
+        Item          { Layout.fillWidth: true }
         Clock      { Layout.alignment: Qt.AlignVCenter }
         Item       { Layout.fillWidth: true }
         SysInfo    { Layout.alignment: Qt.AlignVCenter }
