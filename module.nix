@@ -130,12 +130,10 @@ in {
     };
 
     # ── Hyprland Plugin Symlink'leri ───────────────────────────────────────
-    # hyprexpo, çalışan Hyprland ile aynı versiyona göre derlenmeli.
-    # inputs.hyprland = v0.55.0 flake → pkgs.hyprlandPlugins.hyprexpo override
+    # hyprexpo, çalışan Hyprland ile ABI uyumlu olmalı.
+    # inputs.hyprland-plugins: inputs.hyprland.follows = "hyprland" (v0.55.0)
     home.file.".local/share/hypr-plugins/hyprexpo.so".source =
-      "${(pkgs.hyprlandPlugins.hyprexpo.override {
-        hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      })}/lib/libhyprexpo.so";
+      "${inputs.hyprland-plugins.packages.${pkgs.system}.hyprexpo}/lib/libhyprexpo.so";
 
     # ── Paketler ───────────────────────────────────────────────────────────
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
