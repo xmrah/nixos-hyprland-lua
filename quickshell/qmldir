@@ -2,6 +2,8 @@ singleton Appearance 1.0 Appearance.qml
 singleton Colors 1.0 Colors.qml
 singleton AudioService 1.0 AudioService.qml
 singleton BrightnessService 1.0 BrightnessService.qml
+singleton SysInfoService 1.0 SysInfoService.qml
+singleton GlobalStates 1.0 GlobalStates.qml
 Media 1.0 Media.qml
 ActiveWindow 1.0 ActiveWindow.qml
 Bar 1.0 Bar.qml
@@ -11,5 +13,7 @@ SysInfo 1.0 SysInfo.qml
 Brightness 1.0 Brightness.qml
 Volume 1.0 Volume.qml
 Network 1.0 Network.qml
+Notifications 1.0 Notifications.qml
+SysInfoPopup 1.0 SysInfoPopup.qml
 Tray 1.0 Tray.qml
 Power 1.0 Power.qml

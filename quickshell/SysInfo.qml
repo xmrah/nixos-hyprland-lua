@@ -1,11 +1,8 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 
 Rectangle {
     id: root
-    property int cpuUsage: 0
-    property int ramUsage: 0
 
     implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 20
@@ -23,59 +20,56 @@ Rectangle {
             spacing: 4
             anchors.verticalCenter: parent.verticalCenter
             Text {
-                text: "󰻠"
-                font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15
-                color: "#89dceb"
-                anchors.verticalCenter: parent.verticalCenter
+                text: "󰻠"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15
+                color: SysInfoService.cpuColor; anchors.verticalCenter: parent.verticalCenter
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
             }
             Text {
-                text: root.cpuUsage + "%"
+                text: SysInfoService.cpuUsage + "%"
                 font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13; font.weight: Font.DemiBold
-                color: root.cpuUsage > 90 ? "#f38ba8" : root.cpuUsage > 70 ? "#f9e2af" : "#89dceb"
+                color: SysInfoService.cpuColor; anchors.verticalCenter: parent.verticalCenter
                 Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
-                anchors.verticalCenter: parent.verticalCenter
             }
         }
 
-        Rectangle { width: 1; height: 16; color: Qt.rgba(1,1,1,0.10); anchors.verticalCenter: parent.verticalCenter }
+        Rectangle { width: 1; height: 14; color: Qt.rgba(1,1,1,0.10); anchors.verticalCenter: parent.verticalCenter }
 
         Row {
             spacing: 4
             anchors.verticalCenter: parent.verticalCenter
             Text {
-                text: "󰍛"
-                font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15
-                color: "#cba6f7"
-                anchors.verticalCenter: parent.verticalCenter
+                text: "󰾲"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15
+                color: SysInfoService.gpuColor; anchors.verticalCenter: parent.verticalCenter
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
             }
             Text {
-                text: root.ramUsage + "%"
+                text: SysInfoService.gpuUsage + "%"
                 font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13; font.weight: Font.DemiBold
-                color: root.ramUsage > 90 ? "#f38ba8" : root.ramUsage > 75 ? "#f9e2af" : "#cba6f7"
+                color: SysInfoService.gpuColor; anchors.verticalCenter: parent.verticalCenter
                 Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
-                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+
+        Rectangle { width: 1; height: 14; color: Qt.rgba(1,1,1,0.10); anchors.verticalCenter: parent.verticalCenter }
+
+        Row {
+            spacing: 4
+            anchors.verticalCenter: parent.verticalCenter
+            Text {
+                text: "󰍛"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 15
+                color: SysInfoService.ramColor; anchors.verticalCenter: parent.verticalCenter
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
+            }
+            Text {
+                text: SysInfoService.ramUsage + "%"
+                font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13; font.weight: Font.DemiBold
+                color: SysInfoService.ramColor; anchors.verticalCenter: parent.verticalCenter
+                Behavior on color { ColorAnimation { duration: Appearance.anim.cpu.dur } }
             }
         }
     }
 
-    Process {
-        id: cpuProc
-        command: ["sh", "-c", "top -bn1 | awk '/^%Cpu/{printf \"%d\", $2+$4}'"]
-        running: false
-        stdout: SplitParser { onRead: data => root.cpuUsage = parseInt(data) || 0 }
-    }
-    Process {
-        id: ramProc
-        command: ["sh", "-c", "awk '/MemTotal/{t=$2} /MemAvailable/{a=$2} END{print int((t-a)/t*100)}' /proc/meminfo"]
-        running: false
-        stdout: SplitParser { onRead: data => root.ramUsage = parseInt(data) || 0 }
-    }
-
-    Timer {
-        interval: 3000; running: true; repeat: true; triggeredOnStart: true
-        onTriggered: {
-            if (!cpuProc.running) cpuProc.running = true
-            if (!ramProc.running) ramProc.running = true
-        }
+    TapHandler {
+        onTapped: GlobalStates.sysInfoOpen = !GlobalStates.sysInfoOpen
     }
 }

@@ -8,4 +8,6 @@ ShellRoot {
             screen: modelData
         }
     }
+
+    SysInfoPopup {}
 }

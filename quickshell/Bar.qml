@@ -35,8 +35,9 @@ WlrLayershell {
         SysInfo    { Layout.alignment: Qt.AlignVCenter }
         Brightness { Layout.alignment: Qt.AlignVCenter }
         Volume     { Layout.alignment: Qt.AlignVCenter }
-        Network    { Layout.alignment: Qt.AlignVCenter }
-        Tray       { Layout.alignment: Qt.AlignVCenter }
+        Network       { Layout.alignment: Qt.AlignVCenter }
+        Notifications { Layout.alignment: Qt.AlignVCenter }
+        Tray          { Layout.alignment: Qt.AlignVCenter }
         Power      { Layout.alignment: Qt.AlignVCenter }
     }
 }
