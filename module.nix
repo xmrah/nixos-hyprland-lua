@@ -65,6 +65,9 @@ in {
     xdg.configFile."swaync/style.css".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/swaync/style.css";
 
+    xdg.configFile."wlogout/layout".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wlogout/layout";
+
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
     # environment.d → systemd user session'a doğrudan inject edilir → güvenli.
