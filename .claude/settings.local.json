@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/xmrah/.config/hypr/**)",
+      "Bash(hyprctl version *)",
+      "Bash(git -C /home/xmrah/Projects/nixos-hyprland-lua remote -v)",
+      "Bash(git -C /home/xmrah/nixos-config remote -v)",
+      "Bash(swww --version)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git -C /home/xmrah/nixos-config add modules/services/gpu.nix)",
+      "Bash(git -C /home/xmrah/nixos-config commit -m 'feat\\(gpu\\): amdgpu.freesync_video=1 — VRR/FreeSync kernel param *)",
+      "Bash(git -C /home/xmrah/Projects/nixos-hyprland-lua push)",
+      "Bash(git -C /home/xmrah/nixos-config push)",
+      "Bash(find /home/xmrah/nixos-config -name Justfile -o -name *.sh)",
+      "Bash(git clone:*)"
+    ]
+  }
+}

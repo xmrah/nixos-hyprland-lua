@@ -6,16 +6,20 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.on("hyprland.start", function()
+    -- UWSM oturumunu hazır işaretle → graphical-session.target aktif olur
+    -- Bu olmadan quickshell, swaync, cliphist gibi systemd user servisleri başlamaz
+    hl.exec_cmd("uwsm finalize")
+
+    -- Dosya Yöneticisi daemon → thunar-volman aktif, USB otomatik bağlama çalışır
+    hl.exec_cmd("thunar --daemon")
+
     -- Wallpaper Engine + ilk görüntü
-    -- swww query ile daemon hazır olana kadar poll edilir, sabit sleep yok
-    hl.exec_cmd("swww-daemon")
-    hl.exec_cmd("sh -c 'until swww query 2>/dev/null; do sleep 0.05; done && swww img ~/.config/hypr/wallpaper.jpg --transition-type fade --transition-duration 1 --transition-fps 90'")
+    -- nixpkgs 26.05: swww → awww olarak yeniden adlandırıldı
+    hl.exec_cmd("awww daemon")
+    hl.exec_cmd("sh -c 'until awww query 2>/dev/null; do sleep 0.05; done && awww img ~/.config/hypr/wallpaper.jpg --transition-type fade --transition-duration 1 --transition-fps 90'")
 
     -- Ağ Yönetimi
     hl.exec_cmd("nm-applet --indicator")
-
-    -- Polkit (Yetki Yükseltme)
-    hl.exec_cmd("/run/current-system/sw/libexec/polkit-kde-authentication-agent-1")
 
     -- Boşta Kalma Yöneticisi (hyprlock ile entegre)
     hl.exec_cmd("hypridle")

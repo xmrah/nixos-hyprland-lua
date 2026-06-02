@@ -18,10 +18,10 @@ hl.monitor({
 
 -- Input Configuration
 -- kb_layout: module.nix keyboard.layout opsiyonundan HYPR_KB_LAYOUT env var olarak gelir.
--- Ayarlanmamışsa "us" kullanılır.
+-- Ayarlanmamışsa "tr" kullanılır (reboot sonrası env var otomatik okunur).
 hl.config({
     input = {
-        kb_layout  = os.getenv("HYPR_KB_LAYOUT")  or "us",
+        kb_layout  = os.getenv("HYPR_KB_LAYOUT")  or "tr",
         kb_variant = os.getenv("HYPR_KB_VARIANT") or "",
         follow_mouse = 1,
         sensitivity = 0,
