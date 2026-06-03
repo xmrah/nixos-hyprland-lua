@@ -56,7 +56,7 @@ hl.bind(mainMod .. "+mouse_down", hl.dsp.exec_cmd("hyprctl dispatch workspace e+
 
 -- Özel Workspace (Scratchpad)
 hl.bind(mainMod .. "+S",     hl.dsp.exec_cmd("hyprctl dispatch togglespecialworkspace magic"))
-hl.bind(mainMod .. "+grave", hl.dsp.exec_cmd("hyprctl dispatch movetospecialworkspace magic"))
+hl.bind(mainMod .. "+Z",     hl.dsp.exec_cmd("hyprctl dispatch movetospecialworkspace magic"))
 
 -- ═══════════════════════════════════════════
 -- 5. FARE
