@@ -51,12 +51,12 @@ for i = 1, 9 do
 end
 
 -- Workspace Scroll (Mouse wheel ile geçiş)
-hl.bind(mainMod .. "+mouse_up",   hl.dsp.exec_cmd("hyprctl dispatch workspace e-1"))
-hl.bind(mainMod .. "+mouse_down", hl.dsp.exec_cmd("hyprctl dispatch workspace e+1"))
+hl.bind(mainMod .. "+mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. "+mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 
 -- Özel Workspace (Scratchpad)
-hl.bind(mainMod .. "+S",     hl.dsp.exec_cmd("hyprctl dispatch togglespecialworkspace magic"))
-hl.bind(mainMod .. "+Z",     hl.dsp.exec_cmd("hyprctl dispatch movetospecialworkspace magic"))
+hl.bind(mainMod .. "+S", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. "+Z", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- ═══════════════════════════════════════════
 -- 5. FARE
