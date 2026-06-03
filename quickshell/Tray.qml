@@ -35,13 +35,26 @@ Rectangle {
                     fillMode: Image.PreserveAspectFit
                 }
 
+                QsMenuAnchor {
+                    id: contextMenu
+                    menu: parent.modelData.menu
+                    anchor.window: root.QsWindow.window
+                    anchor.rect.x: parent.x
+                    anchor.rect.y: parent.y + parent.height
+                }
+
                 TapHandler {
-                    onTapped:            parent.modelData.activate()
-                    acceptedButtons:     Qt.LeftButton
+                    onTapped:        parent.modelData.activate()
+                    acceptedButtons: Qt.LeftButton
                 }
                 TapHandler {
-                    onTapped:            parent.modelData.secondaryActivate()
-                    acceptedButtons:     Qt.RightButton
+                    onTapped: {
+                        if (parent.modelData.menu)
+                            contextMenu.open()
+                        else
+                            parent.modelData.secondaryActivate()
+                    }
+                    acceptedButtons: Qt.RightButton
                 }
             }
         }
