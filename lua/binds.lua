@@ -23,16 +23,17 @@ hl.bind(mainMod .. "+P",      hl.dsp.window.pseudo())
 hl.bind(mainMod .. "+J",      hl.dsp.layout("togglesplit"))
 
 -- Pencere Boyutlandırma (SUPER+CTRL+Yön)
-hl.bind(mainMod .. "+CTRL+left",  hl.dsp.exec_cmd("hyprctl dispatch resizeactive -40 0"),  { repeating = true })
-hl.bind(mainMod .. "+CTRL+right", hl.dsp.exec_cmd("hyprctl dispatch resizeactive 40 0"),   { repeating = true })
-hl.bind(mainMod .. "+CTRL+up",    hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 -40"),  { repeating = true })
-hl.bind(mainMod .. "+CTRL+down",  hl.dsp.exec_cmd("hyprctl dispatch resizeactive 0 40"),   { repeating = true })
+-- y/x = 1 zorunlu: Lua API sıfır delta kabul etmiyor
+hl.bind(mainMod .. "+CTRL+left",  hl.dsp.window.resize({ x = -40, y = 1 }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+right", hl.dsp.window.resize({ x =  40, y = 1 }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+up",    hl.dsp.window.resize({ x = 1, y = -40 }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+down",  hl.dsp.window.resize({ x = 1, y =  40 }), { repeating = true })
 
 -- Pencere Taşıma (SUPER+SHIFT+Yön)
-hl.bind(mainMod .. "+SHIFT+left",  hl.dsp.exec_cmd("hyprctl dispatch movewindow l"))
-hl.bind(mainMod .. "+SHIFT+right", hl.dsp.exec_cmd("hyprctl dispatch movewindow r"))
-hl.bind(mainMod .. "+SHIFT+up",    hl.dsp.exec_cmd("hyprctl dispatch movewindow u"))
-hl.bind(mainMod .. "+SHIFT+down",  hl.dsp.exec_cmd("hyprctl dispatch movewindow d"))
+hl.bind(mainMod .. "+SHIFT+left",  hl.dsp.window.move({ direction = "l" }))
+hl.bind(mainMod .. "+SHIFT+right", hl.dsp.window.move({ direction = "r" }))
+hl.bind(mainMod .. "+SHIFT+up",    hl.dsp.window.move({ direction = "u" }))
+hl.bind(mainMod .. "+SHIFT+down",  hl.dsp.window.move({ direction = "d" }))
 
 -- ═══════════════════════════════════════════
 -- 3. FOCUS
