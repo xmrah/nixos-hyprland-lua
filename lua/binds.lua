@@ -21,6 +21,7 @@ hl.bind(mainMod .. "+V",      hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. "+F",      hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. "+P",      hl.dsp.window.pseudo())
 hl.bind(mainMod .. "+J",      hl.dsp.layout("togglesplit"))
+hl.bind(mainMod .. "+Tab",    hl.dsp.exec_cmd("quickshell ipc call default overview toggle"))
 
 -- Pencere Boyutlandırma (SUPER+CTRL+Yön)
 -- y/x = 1 zorunlu: Lua API sıfır delta kabul etmiyor

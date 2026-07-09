@@ -1,5 +1,6 @@
 //@ pragma UseQApplication
 import Quickshell
+import Quickshell.Io
 
 ShellRoot {
     Variants {
@@ -11,4 +12,12 @@ ShellRoot {
     }
 
     SysInfoPopup {}
+    Overview {}
+
+    IpcHandler {
+        name: "overview"
+        function toggle() {
+            GlobalStates.overviewOpen = !GlobalStates.overviewOpen
+        }
+    }
 }
