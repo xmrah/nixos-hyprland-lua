@@ -55,7 +55,6 @@ PanelWindow {
                 text: "󰒲"
                 font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: 24
-                color: Colors.subtext
                 
                 TapHandler { 
                     onTapped: GlobalStates.dashboardOpen = false 
