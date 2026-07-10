@@ -18,3 +18,5 @@ SysInfoPopup 1.0 SysInfoPopup.qml
 Tray 1.0 Tray.qml
 Power 1.0 Power.qml
 Overview 1.0 Overview.qml
+Dashboard 1.0 Dashboard.qml
+DashboardToggle 1.0 DashboardToggle.qml

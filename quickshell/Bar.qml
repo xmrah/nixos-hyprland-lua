@@ -27,17 +27,12 @@ WlrLayershell {
         spacing: 5
 
         Workspaces    { Layout.alignment: Qt.AlignVCenter }
-        Media         { id: mediaWidget;   Layout.alignment: Qt.AlignVCenter }
-        ActiveWindow  { id: activeWidget; Layout.alignment: Qt.AlignVCenter; visible: activeWidget.hasContent && !mediaWidget.hasPlayer }
+        ActiveWindow  { id: activeWidget; Layout.alignment: Qt.AlignVCenter; visible: activeWidget.hasContent }
         Item          { Layout.fillWidth: true }
-        Clock      { Layout.alignment: Qt.AlignVCenter }
-        Item       { Layout.fillWidth: true }
-        SysInfo    { Layout.alignment: Qt.AlignVCenter }
-        Brightness { Layout.alignment: Qt.AlignVCenter }
-        Volume     { Layout.alignment: Qt.AlignVCenter }
-        Network       { Layout.alignment: Qt.AlignVCenter }
-        Notifications { Layout.alignment: Qt.AlignVCenter }
+        Clock         { Layout.alignment: Qt.AlignVCenter }
+        Item          { Layout.fillWidth: true }
         Tray          { Layout.alignment: Qt.AlignVCenter }
-        Power      { Layout.alignment: Qt.AlignVCenter }
+        Notifications { Layout.alignment: Qt.AlignVCenter }
+        DashboardToggle { Layout.alignment: Qt.AlignVCenter }
     }
 }

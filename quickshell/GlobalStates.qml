@@ -2,6 +2,7 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    property bool sysInfoOpen: false
+    property bool dashboardOpen: false
     property bool overviewOpen: false
+    property bool zenMode: false
 }

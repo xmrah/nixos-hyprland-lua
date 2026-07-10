@@ -11,7 +11,7 @@ ShellRoot {
         }
     }
 
-    SysInfoPopup {}
+    Dashboard {}
     Overview {}
 
     IpcHandler {
