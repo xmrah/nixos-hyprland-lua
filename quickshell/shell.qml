@@ -15,7 +15,7 @@ ShellRoot {
     Overview {}
 
     IpcHandler {
-        name: "overview"
+        target: "overview"
         function toggle() {
             GlobalStates.overviewOpen = !GlobalStates.overviewOpen
         }

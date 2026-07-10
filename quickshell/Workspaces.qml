@@ -56,8 +56,7 @@ Rectangle {
                 readonly property int winCount: {
                     if (wsId === root.activeId)
                         return Hyprland.focusedMonitor?.activeWorkspace?.windows ?? 0
-                    const ws = Hyprland.workspaces.find(w => w.id === wsId)
-                    return ws ? ws.windows : 0
+                    return root.windowCount(wsId)
                 }
 
                 implicitWidth:  isActive ? 28 : 8

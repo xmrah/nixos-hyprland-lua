@@ -75,7 +75,6 @@ PanelWindow {
                     height: 160
                     radius: Appearance.size.radius
                     color: Qt.rgba(0.118, 0.118, 0.180, 0.9)
-                    border.color: Qt.rgba(0.537, 0.706, 0.980, 0.3)
                     border.width: 1
 
                     // Hover efekti
