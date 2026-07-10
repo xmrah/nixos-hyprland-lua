@@ -31,6 +31,7 @@ load_module("hardware")    -- Monitor, input, GPU
 load_module("autostart")   -- UWSM uyumlu servisler
 load_module("theme")       -- Glassmorphism, animasyonlar
 load_module("rules")       -- Window/layer kuralları
+load_module("events")      -- Smart Event Hooks (Zen Mode, vs.)
 load_module("binds")       -- Keybinding'ler
 
 io.stderr:write("[hyprland.lua] Sovereign Framework initialized — " .. user_home .. "\n")
