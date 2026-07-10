@@ -21,11 +21,7 @@ PanelWindow {
 
     implicitWidth:  420
     
-    transform: Translate {
-        id: slideAnim
-        x: GlobalStates.dashboardOpen ? 0 : 500
-        Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
-    }
+    // Animasyon kaldirildi, Window nesnelerinde transform kullanilamaz.
 
     Rectangle {
         anchors.fill: parent
