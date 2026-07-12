@@ -75,7 +75,7 @@ PanelWindow {
             }
         }
 
-        // ── 2. MEDYA MERKEZİ (MPRIS) ──
+        // ── 2. MEDYA MERKEZİ (PLAYERCTL) ──
         Rectangle {
             id: mediaBox
             Layout.fillWidth: true
@@ -86,15 +86,58 @@ PanelWindow {
             border.width: 1
             clip: true
 
-            // Oynatılan bir medya var mı
-            property var player: Mpris.players.length > 0 ? Mpris.players[0] : null
-            property bool hasArt: player && player.trackArtUrl && player.trackArtUrl !== ""
-            property bool isPlaying: player && player.playbackState === Mpris.Playing
+            property string trackTitle: ""
+            property string trackArtist: ""
+            property string trackArtUrl: ""
+            property bool isPlaying: false
+            property bool hasArt: trackArtUrl !== ""
+            
+            // Metadata okuma (title|||artist|||artUrl)
+            Process {
+                id: metaProc
+                command: ["sh", "-c", "playerctl metadata --format '{{title}}|||{{artist}}|||{{mpris:artUrl}}' 2>/dev/null || echo '||||||'"]
+                running: false
+                stdout: SplitParser {
+                    onRead: data => {
+                        let t = data.trim()
+                        if (t && t !== "||||||") {
+                            let parts = t.split("|||")
+                            mediaBox.trackTitle = parts[0] || ""
+                            mediaBox.trackArtist = parts[1] || ""
+                            let art = parts[2] || ""
+                            if (art.startsWith("file://") || art.startsWith("http")) {
+                                mediaBox.trackArtUrl = art
+                            } else {
+                                mediaBox.trackArtUrl = ""
+                            }
+                        } else {
+                            mediaBox.trackTitle = ""
+                            mediaBox.trackArtist = ""
+                            mediaBox.trackArtUrl = ""
+                        }
+                    }
+                }
+            }
+
+            // Durum okuma (Playing / Paused)
+            Process {
+                id: statusProc
+                command: ["sh", "-c", "playerctl status 2>/dev/null || echo 'Stopped'"]
+                running: false
+                stdout: SplitParser {
+                    onRead: data => { mediaBox.isPlaying = (data.trim() === "Playing") }
+                }
+            }
+
+            Timer {
+                interval: 2000; running: GlobalStates.dashboardOpen; repeat: true; triggeredOnStart: true
+                onTriggered: { metaProc.running = true; statusProc.running = true; }
+            }
 
             // Kapak fotoğrafı arka plan bluru
             Image {
                 anchors.fill: parent
-                source: mediaBox.hasArt ? mediaBox.player.trackArtUrl : ""
+                source: mediaBox.hasArt ? mediaBox.trackArtUrl : ""
                 fillMode: Image.PreserveAspectCrop
                 opacity: 0.15
                 visible: mediaBox.hasArt
@@ -114,13 +157,12 @@ PanelWindow {
 
                     Image {
                         anchors.fill: parent
-                        source: mediaBox.hasArt ? mediaBox.player.trackArtUrl : ""
+                        source: mediaBox.hasArt ? mediaBox.trackArtUrl : ""
                         fillMode: Image.PreserveAspectCrop
                         visible: mediaBox.hasArt
                     }
 
                     Text { 
-                        id: fallbackMusicIcon
                         anchors.centerIn: parent
                         text: ""
                         font.family: "JetBrainsMono Nerd Font"
@@ -128,7 +170,6 @@ PanelWindow {
                         color: mediaBox.isPlaying ? Colors.peach : Colors.mauve 
                         visible: !mediaBox.hasArt
                         
-                        // Ruhsuzluğu Gidermek İçin Nabız Animasyonu (Müzik çalarken)
                         SequentialAnimation on scale {
                             running: mediaBox.isPlaying && !mediaBox.hasArt
                             loops: Animation.Infinite
@@ -142,7 +183,7 @@ PanelWindow {
                     Layout.fillWidth: true
                     spacing: 4
                     Text { 
-                        text: mediaBox.player ? (mediaBox.player.trackTitle || (mediaBox.isPlaying ? "Oynatılıyor (Meta Veri Yok)" : "Bilinmeyen Parça")) : "Müzik Çalmıyor"
+                        text: mediaBox.trackTitle !== "" ? mediaBox.trackTitle : (mediaBox.isPlaying ? "Oynatılıyor (İsimsiz)" : "Müzik Çalmıyor")
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 16
                         font.weight: Font.Bold
@@ -151,7 +192,7 @@ PanelWindow {
                         Layout.fillWidth: true 
                     }
                     Text { 
-                        text: mediaBox.player ? (mediaBox.player.trackArtist || (mediaBox.isPlaying ? "YouTube / Tarayıcı" : "Sovereign Media")) : "Şu an oynatılan bir medya yok"
+                        text: mediaBox.trackArtist !== "" ? mediaBox.trackArtist : (mediaBox.isPlaying ? "Bilinmeyen Sanatçı" : "Şu an oynatılan bir medya yok")
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 12
                         color: Colors.subtext
@@ -169,44 +210,27 @@ PanelWindow {
                             text: "󰒮"
                             font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 24
-                            color: mediaBox.player && mediaBox.player.canGoPrevious ? Colors.text : Colors.surface1
-                            TapHandler { onTapped: { if(mediaBox.player) mediaBox.player.previous() } } 
+                            color: Colors.text
+                            TapHandler { onTapped: Quickshell.execDetached(["playerctl", "previous"]) } 
                             HoverHandler { cursorShape: Qt.PointingHandCursor }
                         }
                         Text { 
                             text: mediaBox.isPlaying ? "󰏦" : "󰐊"
                             font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 28
-                            color: mediaBox.player ? Colors.mauve : Colors.surface1
-                            TapHandler { 
-                                onTapped: { if(mediaBox.player) mediaBox.player.togglePlaying() }
-                            }
+                            color: Colors.mauve
+                            TapHandler { onTapped: Quickshell.execDetached(["playerctl", "play-pause"]) }
                             HoverHandler { cursorShape: Qt.PointingHandCursor }
                         }
                         Text { 
                             text: "󰒭"
                             font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 24
-                            color: mediaBox.player && mediaBox.player.canGoNext ? Colors.text : Colors.surface1
-                            TapHandler { onTapped: { if(mediaBox.player) mediaBox.player.next() } } 
+                            color: Colors.text
+                            TapHandler { onTapped: Quickshell.execDetached(["playerctl", "next"]) } 
                             HoverHandler { cursorShape: Qt.PointingHandCursor }
                         }
                     }
-                }
-            }
-            
-            // Progress Bar
-            Rectangle {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: 3
-                color: Colors.surface1
-                Rectangle {
-                    height: parent.height
-                    color: Colors.mauve
-                    width: mediaBox.player && mediaBox.player.trackLength > 0 ? parent.width * (mediaBox.player.position / mediaBox.player.trackLength) : 0
-                    Behavior on width { NumberAnimation { duration: 500 } }
                 }
             }
         }
