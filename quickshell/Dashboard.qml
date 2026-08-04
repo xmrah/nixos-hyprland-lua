@@ -361,6 +361,47 @@ PanelWindow {
                 }
                 HoverHandler { cursorShape: Qt.PointingHandCursor }
             }
+
+            // Kasa (Downloads Trapdoor)
+            Rectangle {
+                property bool isOpen: false
+                Layout.fillWidth: true; Layout.preferredHeight: 70; radius: 14; 
+                color: isOpen ? Colors.green : Colors.surface0; border.color: isOpen ? "transparent" : Colors.surface1; border.width: 1
+                Behavior on color { ColorAnimation { duration: 200 } }
+                ColumnLayout { 
+                    anchors.centerIn: parent; spacing: 4
+                    Text { text: parent.parent.isOpen ? "󰛉" : "󰌾"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 22; color: parent.parent.isOpen ? Colors.base : Colors.text; Layout.alignment: Qt.AlignHCenter }
+                    Text { text: "Kasa"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 11; font.weight: Font.Bold; color: parent.parent.isOpen ? Colors.base : Colors.text; Layout.alignment: Qt.AlignHCenter } 
+                }
+                
+                Process {
+                    id: checkVaultProc
+                    command: ["sh", "-c", "stat -c '%U' $HOME/.local/share/SecureDownloads 2>/dev/null || echo 'root'"]
+                    running: false
+                    stdout: SplitParser {
+                        onRead: data => {
+                            parent.isOpen = (data.trim() === "xmrah");
+                        }
+                    }
+                }
+
+                Connections {
+                    target: GlobalStates
+                    function onDashboardOpenChanged() {
+                        if (GlobalStates.dashboardOpen) {
+                            checkVaultProc.running = true;
+                        }
+                    }
+                }
+
+                TapHandler { 
+                    onTapped: { 
+                        Quickshell.execDetached(["sh", "-c", "/persist/nixos-config/scripts/dl-toggle.sh"]); 
+                        parent.isOpen = !parent.isOpen;
+                    } 
+                }
+                HoverHandler { cursorShape: Qt.PointingHandCursor }
+            }
         }
 
         // ── 5. SİSTEM MONİTÖRÜ (GB ve Process Listesi) ──
