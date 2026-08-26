@@ -1,5 +1,5 @@
 {
-  description = "Pure Lua & Nix Flake based Hyprland 0.55 Framework";
+  description = "Pure Lua & Nix Flake based Hyprland 0.56+ Framework";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

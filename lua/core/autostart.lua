@@ -1,4 +1,4 @@
--- Sovereign Autostart Services
+-- Sovereign Autostart Services (Hyprland 0.56+)
 -- UWSM uyumlu — dbus/systemd çağrıları UWSM'ye bırakıldı.
 
 -- Cursor tema (Wayland native)
@@ -10,8 +10,6 @@ hl.on("hyprland.start", function()
     -- Bu olmadan quickshell, swaync, cliphist gibi systemd user servisleri başlamaz
     hl.exec_cmd("uwsm finalize")
 
-    -- Dosya Yöneticisi daemon → thunar-volman aktif, USB otomatik bağlama çalışır
-    hl.exec_cmd("thunar --daemon")
 
     -- Wallpaper Engine + ilk görüntü
     -- nixpkgs 26.05: swww → awww olarak yeniden adlandırıldı

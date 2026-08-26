@@ -1,5 +1,5 @@
 -- Hardware & Monitor (AMD RX 7700 XT / ASUS ROG Strix 180Hz)
--- Sovereign Edition — Hyprland 0.55+ Native Lua API
+-- Sovereign Edition — Hyprland 0.56+ Native Lua API
 
 -- GPU Cihaz Yolu (KRİTİK)
 -- card1 = KMS-capable cihaz (ekran yönetimi için zorunlu)

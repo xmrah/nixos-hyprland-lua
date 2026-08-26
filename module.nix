@@ -149,11 +149,11 @@ in {
       # Launcher (binds.lua: SUPER+R)
       wofi
 
-      # Oturum kapatma (waybar custom/power)
+      # Oturum kapatma (quickshell Power.qml / wlogout)
       wlogout
 
-      # Wallpaper engine (autostart.lua)
-      swww
+      # Wallpaper engine (autostart.lua: awww)
+      awww
 
       # Ekran kilidi + boşta kalma (binds.lua: SUPER+L / autostart.lua)
       hyprlock

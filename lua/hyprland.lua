@@ -1,8 +1,10 @@
--- Hyprland 0.55 Native Lua Framework
+-- Hyprland 0.56+ Native Lua Framework
 -- Entry Point: hyprland.lua (Sovereign Ecosystem)
 -- Domain-Driven Architecture
 
 if not hl then return end
+
+
 
 -- Dinamik ve Güvenli Yol Tespiti
 local user_home = os.getenv("HOME")

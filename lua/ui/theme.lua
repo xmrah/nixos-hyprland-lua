@@ -43,7 +43,6 @@ hl.config({
             enabled = true,
             size = 8,
             passes = 3,
-            new_optimizations = true,
             xray = false,
             noise = 0.02,
             contrast = 0.9,

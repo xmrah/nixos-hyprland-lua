@@ -1,4 +1,4 @@
--- Sovereign Keybindings: Pure Lua 0.55+
+-- Sovereign Keybindings: Pure Lua 0.56+
 -- Author: xmrah
 
 local mainMod = "SUPER"
@@ -24,11 +24,11 @@ hl.bind(mainMod .. "+J",      hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. "+Tab",    hl.dsp.exec_cmd("quickshell ipc call default overview toggle"))
 
 -- Pencere Boyutlandırma (SUPER+CTRL+Yön)
--- y/x = 1 zorunlu: Lua API sıfır delta kabul etmiyor
-hl.bind(mainMod .. "+CTRL+left",  hl.dsp.window.resize({ x = -40, y = 1 }), { repeating = true })
-hl.bind(mainMod .. "+CTRL+right", hl.dsp.window.resize({ x =  40, y = 1 }), { repeating = true })
-hl.bind(mainMod .. "+CTRL+up",    hl.dsp.window.resize({ x = 1, y = -40 }), { repeating = true })
-hl.bind(mainMod .. "+CTRL+down",  hl.dsp.window.resize({ x = 1, y =  40 }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+left",  hl.dsp.window.resize({ x = -40, y = 0, relative = true }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+right", hl.dsp.window.resize({ x =  40, y = 0, relative = true }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+up",    hl.dsp.window.resize({ x = 0, y = -40, relative = true }), { repeating = true })
+hl.bind(mainMod .. "+CTRL+down",  hl.dsp.window.resize({ x = 0, y =  40, relative = true }), { repeating = true })
+
 
 -- Pencere Taşıma (SUPER+SHIFT+Yön)
 hl.bind(mainMod .. "+SHIFT+left",  hl.dsp.window.move({ direction = "l" }))

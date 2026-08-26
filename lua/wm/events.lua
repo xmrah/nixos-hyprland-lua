@@ -1,5 +1,5 @@
 -- Sovereign Framework: Smart Event Hooks
--- Hyprland 0.55+ Native Lua API (Ecosystem Edition)
+-- Hyprland 0.56+ Native Lua API (Ecosystem Edition)
 -- Hızlı, Non-Blocking ve Uzaysal (Spatial) Bütünlüğe Saygılı
 
 -- ═══════════════════════════════════════════
@@ -7,28 +7,50 @@
 -- ═══════════════════════════════════════════
 local ws_window_counts = {}
 
+-- Dikkat dağıtıcı uygulamalar (focus stealing + auto-tab'da kullanılır)
+local DISTRACTORS = { "discord", "telegram-desktop", "slack", "signal", "spotify" }
+
+-- Yardımcı: class, distractor mı?
+local function is_distractor(class)
+    for _, d in ipairs(DISTRACTORS) do
+        if class == d then return true end
+    end
+    return false
+end
+
+-- Yardımcı: workspace ID'sini güvenli çıkar
+local function get_ws_id(w)
+    if type(w.workspace) == "table" and w.workspace.id then
+        return w.workspace.id
+    elseif type(w.workspace) == "number" then
+        return w.workspace
+    end
+    return -1
+end
+
 -- ═══════════════════════════════════════════
--- 1. AUTO-TAB (Geometrik Koruma)
+-- 1. WINDOW OPEN — Auto-Tab + Focus Stealing Prevention
 -- ═══════════════════════════════════════════
 hl.on("window.open", function(w)
     if not w then return end
-    
+
     local class = string.lower(w.class or "")
-    local distractors = { "discord", "telegram-desktop", "slack", "signal", "spotify" }
-    for _, d in ipairs(distractors) do
-        if class == d then return end 
+
+    -- Dikkat dağıtıcı → sessizce WS 9'a taşı, başka işlem yapma
+    if is_distractor(class) then
+        local addr = w.address or ""
+        if addr ~= "" then
+            Utils.async_cmd("hyprctl dispatch movetoworkspacesilent 9,address:" .. addr)
+            Utils.notify("Focus Korundu", (w.title or class) .. " sessizce (WS 9) başlatıldı.", 3000)
+        end
+        return
     end
 
-    local ws_id = -1
-    if type(w.workspace) == "table" and w.workspace.id then
-        ws_id = w.workspace.id
-    elseif type(w.workspace) == "number" then
-        ws_id = w.workspace
-    end
-    
+    -- Normal uygulama → Auto-Tab (Geometrik Koruma)
+    local ws_id = get_ws_id(w)
     if ws_id ~= -1 then
         ws_window_counts[ws_id] = (ws_window_counts[ws_id] or 0) + 1
-        
+
         if ws_window_counts[ws_id] >= 3 and not w.floating then
             Utils.async_cmd("hyprctl dispatch togglegroup")
             Utils.notify("Sovereign Auto-Tab", "Alan daraldığı için Geometrik Koruma (Sekme) aktif edildi.")
@@ -36,46 +58,17 @@ hl.on("window.open", function(w)
     end
 end)
 
+-- ═══════════════════════════════════════════
+-- 2. WINDOW CLOSE — Pencere sayacı güncelle
+-- ═══════════════════════════════════════════
 hl.on("window.close", function(w)
     if not w then return end
-    local ws_id = -1
-    if type(w.workspace) == "table" and w.workspace.id then
-        ws_id = w.workspace.id
-    elseif type(w.workspace) == "number" then
-        ws_id = w.workspace
-    end
-    
+    local ws_id = get_ws_id(w)
+
     if ws_id ~= -1 and ws_window_counts[ws_id] then
         ws_window_counts[ws_id] = math.max(0, ws_window_counts[ws_id] - 1)
     end
 end)
-
--- ═══════════════════════════════════════════
--- 2. FOCUS STEALING PREVENTION (Dikkat Dağıtıcı Filtresi)
--- ═══════════════════════════════════════════
-hl.on("window.open", function(w)
-    if not w then return end
-    
-    local class = string.lower(w.class or "")
-    local distractors = { "discord", "telegram-desktop", "slack", "signal", "spotify" }
-    
-    local is_distractor = false
-    for _, d in ipairs(distractors) do
-        if class == d then
-            is_distractor = true
-            break
-        end
-    end
-    
-    if is_distractor then
-        local addr = w.address or ""
-        if addr ~= "" then
-            Utils.async_cmd("hyprctl dispatch movetoworkspacesilent 9,address:" .. addr)
-            Utils.notify("Focus Korundu", (w.title or class) .. " sessizce (WS 9) başlatıldı.", 3000)
-        end
-    end
-end)
-
 
 -- ═══════════════════════════════════════════
 -- 3. ZEN MODE (Focus Tracker)
@@ -99,3 +92,4 @@ hl.on("window.active", function(w)
 end)
 
 print("[wm/events.lua] Zeki ve Non-Blocking Hooks yüklendi.")
+

@@ -2,7 +2,7 @@
 
 > **"Pure Speed, Zero Bloat, Total Control."**
 
-NixOS için Hyprland'in **Native Lua API**'sini (v0.55+) temel alan, modüler ve yüksek performanslı masaüstü çerçevesi. Geleneksel DSL yapılarını terk ederek tamamen programlanabilir ve canlı düzenlenebilir bir deneyim sunar.
+NixOS için Hyprland'in **Native Lua API**'sini (v0.56+) temel alan, modüler ve yüksek performanslı masaüstü çerçevesi. Geleneksel DSL yapılarını terk ederek tamamen programlanabilir ve canlı düzenlenebilir bir deneyim sunar.
 
 ---
 
@@ -81,16 +81,19 @@ nixos-hyprland-lua/
 ├── Justfile             # Yönetim komutları
 ├── lua/
 │   ├── hyprland.lua     # Ana giriş noktası (entry point)
-│   ├── colors.lua       # Renk paleti (global Colors tablosu)
-│   ├── hardware.lua     # Monitör, input ve GPU ayarları
-│   ├── autostart.lua    # Başlangıç servisleri
-│   ├── theme.lua        # Glassmorphism, animasyonlar, estetik
-│   ├── rules.lua        # Pencere ve workspace kuralları
-│   └── binds.lua        # Keybinding'ler ve mouse sürükleme
+│   ├── lib/utils.lua    # Yardımcı fonksiyonlar (async_cmd, notify, qs_ipc)
+│   ├── ui/colors.lua    # Renk paleti (global Colors tablosu)
+│   ├── ui/theme.lua     # Glassmorphism, animasyonlar, estetik
+│   ├── core/hardware.lua # Monitör, input ve GPU ayarları
+│   ├── core/autostart.lua # Başlangıç servisleri
+│   ├── wm/rules.lua     # Pencere ve workspace kuralları
+│   ├── wm/events.lua    # Akıllı event hooks (auto-tab, zen mode)
+│   └── wm/binds.lua     # Keybinding'ler ve mouse sürükleme
 ├── configs/
 │   ├── hyprlock.conf    # Ekran kilidi konfigürasyonu
+│   ├── hypridle.conf    # Boşta kalma yönetimi
 │   └── wofi/            # Launcher tema ve ayarları
-└── quickshell/          # QML tabanlı Sovereign Shell bileşenleri
+└── quickshell/          # QML tabanlı Sovereign Shell (24 bileşen)
 ```
 
 ---
@@ -109,7 +112,7 @@ just logs           # Canlı Hyprland loglarını izler
 ## Gereksinimler
 
 - NixOS + Home Manager (flake tabanlı)
-- Hyprland v0.55.0+
+- Hyprland v0.56.0+
 - UWSM (systemd oturum yönetimi için)
 
 ---
