@@ -9,6 +9,7 @@ NixOS için Hyprland'in **Native Lua API**'sini (v0.56+) temel alan, modüler ve
 ## Öne Çıkan Özellikler
 
 - **Native Lua Engine:** Legacy `hyprlang` bağımlılığı olmadan, saf Lua performansı
+- **Sıfır Gecikmeli Native Bildirimler:** `hl.notification.create()` üzerinden çalışan forksuz bildirim altyapısı
 - **Home Manager Modülü:** `flake` input olarak eklenip tek satırla aktif edilir
 - **Live-Editing:** Nix Store engellerine takılmadan, HM rebuild olmadan anlık konfigürasyon yenileme
 - **UWSM Entegrasyonu:** systemd ile tam uyumlu, stabil oturum yönetimi
@@ -91,9 +92,22 @@ nixos-hyprland-lua/
 │   └── wm/binds.lua     # Keybinding'ler ve mouse sürükleme
 ├── configs/
 │   ├── hyprlock.conf    # Ekran kilidi konfigürasyonu
-│   ├── hypridle.conf    # Boşta kalma yönetimi
-│   └── wofi/            # Launcher tema ve ayarları
+│   ├── hypridle.conf    # Boşta kalma ve DPMS / DDC-CI parlaklık yönetimi
+│   ├── wofi/            # Launcher tema ve ayarları
+│   ├── swaync/          # Bildirim merkezi ayarları
+│   └── wlogout/         # Oturum kapatma menüsü (Power)
 └── quickshell/          # QML tabanlı Sovereign Shell (24 bileşen)
+
+---
+
+## Bağımlılık Kararları (Sovereign Seçimleri)
+
+Sistemdeki araçlar tutarlı bir felsefeyle seçilmiştir:
+- **Wallpaper:** `awww` (Eski adıyla `swww`)
+- **Dosya Yöneticisi:** `dolphin` (Daemon vs olmadan doğrudan kullanılır)
+- **Monitör Parlaklığı:** `ddcutil` (Harici masaüstü monitörleri için I2C kontrolü, laptop backlight'ı yerine)
+- **Oturum/Kilit:** `hypridle` + `hyprlock`
+- **Shell & Bar:** `quickshell` (Waybar tamamen kaldırılmıştır)
 ```
 
 ---
