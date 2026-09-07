@@ -93,9 +93,9 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
 -- Parlaklık (DDC/CI — harici monitör, /sys/class/backlight yok)
--- NOT: repeating = true yok — ddcutil I2C flood edip kernel oops tetikler
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("ddcutil setvcp 10 + 5"), { locked = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("ddcutil setvcp 10 - 5"), { locked = true })
+-- NOT: Kernel panic'i önlemek için I2C debounce scripti kullanıldı ve bus 9'a sınırlandırıldı.
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh 9 + 5"), { locked = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh 9 - 5"), { locked = true })
 
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ
