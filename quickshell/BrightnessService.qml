@@ -14,7 +14,7 @@ Singleton {
     // ── Komutlar ──────────────────────────────────────────────────────
     Process {
         id: getProc
-        command: ["sh", "-c", "ddcutil getvcp 10 2>/dev/null | grep -oP 'current value =\\s*\\K[0-9]+'"]
+        command: ["sh", "-c", "ddcutil -b 9 getvcp 10 2>/dev/null | grep -oP 'current value =\\s*\\K[0-9]+'"]
         running: false
         stdout: SplitParser {
             onRead: data => root.brightness = parseInt(data) || 0
@@ -22,11 +22,11 @@ Singleton {
     }
 
     // onExited: refresh() — DDC/CI komutları sıralı çalışmalı, refresh tetikler
-    Process { id: brightUp;   command: ["sh", "-c", "ddcutil setvcp 10 + 5"]; running: false; onExited: refresh() }
-    Process { id: brightDown; command: ["sh", "-c", "ddcutil setvcp 10 - 5"]; running: false; onExited: refresh() }
+    Process { id: brightUp;   command: ["sh", "-c", "ddcutil -b 9 setvcp 10 + 5"]; running: false; onExited: refresh() }
+    Process { id: brightDown; command: ["sh", "-c", "ddcutil -b 9 setvcp 10 - 5"]; running: false; onExited: refresh() }
 
     // ── 10 saniyede bir otomatik güncelle (DDC/CI yavaş) ─────────────
-    Timer { interval: 10000; running: true; repeat: true; triggeredOnStart: true; onTriggered: refresh() }
+    Timer { interval: 60000; running: true; repeat: true; triggeredOnStart: true; onTriggered: refresh() }
 
     // ── Public API ────────────────────────────────────────────────────
     function refresh()        { if (!getProc.running)   getProc.running   = true }
