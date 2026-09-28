@@ -11,7 +11,8 @@ sync message="framework update":
     just audit
     git add .
     git commit -m "feat: {{message}} - $(date +'%Y-%m-%d %H:%M')" || echo "Değişiklik yok."
-    git push
+    git push origin
+    git push codeberg main 2>/dev/null || true
 
 # Hyprland ve Quickshell oturumunu anında yenile
 reload:
