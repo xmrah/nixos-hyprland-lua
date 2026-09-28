@@ -24,6 +24,7 @@ end
 
 -- Quickshell IPC çağrısı (Örn: Utils.qs_ipc("bar", "hide"))
 function Utils.qs_ipc(module, action)
+    if action == "show" then action = "reveal" end
     Utils.async_cmd(string.format("quickshell ipc call %s %s", module, action))
 end
 

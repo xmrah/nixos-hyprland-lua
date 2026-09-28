@@ -78,7 +78,9 @@ hl.on("window.active", function(w)
 
     local is_zen_app = (w.class == "mpv" or w.class == "gamescope" or w.class == "steam_app")
 
-    if is_zen_app or w.fullscreen then
+    local is_fullscreen = (w.fullscreen == true or w.fullscreen == 1 or w.fullscreen == 2)
+
+    if is_zen_app or is_fullscreen then
         hl.config({
             decoration = { dim_inactive = true, dim_strength = 0.4 }
         })
@@ -87,7 +89,7 @@ hl.on("window.active", function(w)
         hl.config({
             decoration = { dim_inactive = false, dim_strength = 0.0 }
         })
-        Utils.qs_ipc("bar", "show")
+        Utils.qs_ipc("bar", "reveal")
     end
 end)
 
