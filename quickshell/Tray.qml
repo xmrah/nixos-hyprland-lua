@@ -6,10 +6,10 @@ import Quickshell.Services.SystemTray
 Rectangle {
     id: root
 
-    implicitHeight: 44
-    implicitWidth:  trayItems.count > 0 ? (trayItems.count * 24) + 20 : 0
+    implicitHeight: Appearance.size.widgetH
+    implicitWidth:  trayItems.count > 0 ? (trayItems.count * 24) + 16 : 0
     visible:        trayItems.count > 0
-    radius:         14
+    radius:         Appearance.size.radiusSm
     color:          Colors.glass
     border.color:   Colors.glassBorder
     border.width:   1
@@ -25,7 +25,7 @@ Rectangle {
             delegate: Item {
                 id: trayDelegate
                 required property SystemTrayItem modelData
-                width: 16; height: 44
+                width: 20; height: Appearance.size.widgetH
 
                 Image {
                     anchors.centerIn: parent

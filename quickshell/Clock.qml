@@ -9,8 +9,8 @@ Rectangle {
     implicitWidth:  label.implicitWidth + 28
     radius:         Appearance.size.radiusSm
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
-    border.color:   hov.containsMouse
-        ? Qt.rgba(0.980, 0.702, 0.529, 0.40)
+    border.color:   hov.hovered
+        ? Qt.rgba(0.980, 0.702, 0.529, 0.45)
         : Qt.rgba(0.980, 0.702, 0.529, 0.15)
     border.width: 1
     Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }

@@ -11,6 +11,7 @@ Rectangle {
     property string artist:    ""
     property bool   playing:   false
     property bool   hasPlayer: false
+    readonly property bool hasContent: hasPlayer
 
     visible:        hasPlayer
     implicitHeight: Appearance.size.widgetH

@@ -8,7 +8,7 @@ local mainMod = "SUPER"
 -- ═══════════════════════════════════════════
 hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. "+Q",      hl.dsp.window.close())
-hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("uwsm stop"))
+hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("quickshell ipc call power toggle"))
 hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("dolphin"))
 hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("quickshell ipc call launcher toggle"))
 hl.bind(mainMod .. "+T",      hl.dsp.exec_cmd("chromium"))
@@ -72,6 +72,9 @@ hl.bind(mainMod .. "+mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Bildirim Merkezi (Quickshell)
 hl.bind(mainMod .. "+N", hl.dsp.exec_cmd("quickshell ipc call notifications toggle"))
+
+-- Kontrol Merkezi / Hub (Quickshell)
+hl.bind(mainMod .. "+D", hl.dsp.exec_cmd("quickshell ipc call dashboard toggle"))
 
 -- Ekran Kilidi
 hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))

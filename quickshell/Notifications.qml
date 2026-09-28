@@ -1,35 +1,30 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 
+// ═══════════════════════════════════════════════════════════════════
+// Sovereign Notifications Bar Widget
+// GlobalStates.notificationCount'u gösterir + panel toggle
+// ═══════════════════════════════════════════════════════════════════
 Rectangle {
     id: root
-    property int count: 0
+    readonly property int count: GlobalStates.notificationCount
     readonly property bool hasNotifications: count > 0
 
     implicitHeight: Appearance.size.widgetH
     implicitWidth:  row.implicitWidth + 16
     radius:         Appearance.size.radius
-    color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
+    color:          hov.hovered
+                        ? Qt.rgba(0.651, 0.890, 0.631, 0.12)
+                        : Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   hasNotifications
                         ? Qt.rgba(0.651, 0.890, 0.631, 0.35)
-                        : Qt.rgba(1, 1, 1, 0.07)
+                        : hov.hovered
+                            ? Qt.rgba(1, 1, 1, 0.12)
+                            : Qt.rgba(1, 1, 1, 0.07)
     border.width:   1
 
+    Behavior on color        { ColorAnimation { duration: Appearance.anim.fast.dur } }
     Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }
-
-    // IPC Handler — bildirim sayısını dışarıdan güncellemek için
-    IpcHandler {
-        target: "notifications"
-        function toggle() {
-            // TODO: Quickshell native bildirim paneli implemente edilecek
-            // Şimdilik bildirim sayacını sıfırla
-            root.count = 0
-        }
-        function updateCount(n) {
-            root.count = n
-        }
-    }
 
     Row {
         id: row
@@ -56,8 +51,8 @@ Rectangle {
         }
     }
 
+    HoverHandler { id: hov }
     TapHandler {
-        // TODO: Native bildirim paneli açılacak
-        onTapped: root.count = 0
+        onTapped: GlobalStates.notificationPanelOpen = !GlobalStates.notificationPanelOpen
     }
 }

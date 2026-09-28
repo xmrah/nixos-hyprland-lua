@@ -15,6 +15,10 @@ QtObject {
 
     property var topProcesses: []
 
+    readonly property color cpuColor: cpuUsage > 85 ? Colors.red : (cpuUsage > 60 ? Colors.yellow : Colors.teal)
+    readonly property color gpuColor: gpuUsage > 85 ? Colors.red : (gpuUsage > 60 ? Colors.yellow : Colors.peach)
+    readonly property color ramColor: ramUsage > 85 ? Colors.red : (ramUsage > 70 ? Colors.yellow : Colors.mauve)
+
     property var _cpuProc: Process {
         command: ["sh", "-c", "top -bn1 | awk '/^%Cpu/{printf \"%d\", $2+$4}'"]
         running: false

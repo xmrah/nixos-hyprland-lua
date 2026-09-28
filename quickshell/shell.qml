@@ -13,6 +13,10 @@ ShellRoot {
 
     Dashboard {}
     Overview {}
+    Launcher {}
+    NotificationToast {}
+    NotificationPanel {}
+    PowerOverlay {}
 
     // ── IPC Handlers ─────────────────────────────────────────────────
     IpcHandler {
@@ -32,16 +36,30 @@ ShellRoot {
     IpcHandler {
         target: "launcher"
         function toggle() {
-            // TODO: Quickshell native launcher implemente edilecek
             GlobalStates.launcherOpen = !GlobalStates.launcherOpen
+            if (GlobalStates.launcherOpen) GlobalStates.clipboardOpen = false
         }
     }
 
     IpcHandler {
         target: "clipboard"
         function toggle() {
-            // TODO: Quickshell native clipboard UI implemente edilecek
             GlobalStates.clipboardOpen = !GlobalStates.clipboardOpen
+            if (GlobalStates.clipboardOpen) GlobalStates.launcherOpen = false
+        }
+    }
+
+    IpcHandler {
+        target: "notifications"
+        function toggle() {
+            GlobalStates.notificationPanelOpen = !GlobalStates.notificationPanelOpen
+        }
+    }
+
+    IpcHandler {
+        target: "power"
+        function toggle() {
+            GlobalStates.powerMenuOpen = !GlobalStates.powerMenuOpen
         }
     }
 
@@ -52,6 +70,15 @@ ShellRoot {
         }
         function show() {
             GlobalStates.barVisible = true
+        }
+        function reveal() {
+            GlobalStates.barVisible = true
+        }
+        function unhide() {
+            GlobalStates.barVisible = true
+        }
+        function toggle() {
+            GlobalStates.barVisible = !GlobalStates.barVisible
         }
     }
 }

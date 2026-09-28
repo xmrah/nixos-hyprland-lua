@@ -37,10 +37,13 @@ Rectangle {
 
     // Çalışma alanındaki uygulamaları tarar ve ikonlarını (tekrar etmeden) birleştirir
     function getWorkspaceIcons(wsId) {
+        if (!Hyprland.clients) return ""
         let icons = []
-        for (let i = 0; i < Hyprland.clients.length; i++) {
-            let client = Hyprland.clients[i]
-            if (client.workspace && client.workspace.id === wsId) {
+        let clients = Hyprland.clients.values || Hyprland.clients
+        if (!clients || !clients.length) return ""
+        for (let i = 0; i < clients.length; i++) {
+            let client = clients[i]
+            if (client && client.workspace && client.workspace.id === wsId) {
                 let icon = getIconForClass(client.class)
                 if (icons.indexOf(icon) === -1) {
                     icons.push(icon)
@@ -51,8 +54,11 @@ Rectangle {
     }
 
     readonly property bool scratchpadOccupied: {
-        for (let i = 0; i < Hyprland.workspaces.length; i++) {
-            if (Hyprland.workspaces[i].id < 0 && Hyprland.workspaces[i].windows > 0)
+        if (!Hyprland.workspaces) return false
+        let ws = Hyprland.workspaces.values || Hyprland.workspaces
+        if (!ws || !ws.length) return false
+        for (let i = 0; i < ws.length; i++) {
+            if (ws[i] && ws[i].id < 0 && ws[i].windows > 0)
                 return true
         }
         return false
