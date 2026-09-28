@@ -25,7 +25,16 @@ Rectangle {
         color:          "#f38ba8"
     }
 
-    Process { id: wlogout; command: ["wlogout"]; running: false }
+    // Sovereign Power Menu — systemd üzerinden güç yönetimi
+    Process { id: powerOff;  command: ["systemctl", "poweroff"];  running: false }
+    Process { id: rebootCmd; command: ["systemctl", "reboot"];    running: false }
+    Process { id: lockCmd;   command: ["hyprlock"];               running: false }
+    Process { id: logoutCmd; command: ["uwsm", "stop"];           running: false }
+
     HoverHandler { id: hov }
-    TapHandler   { onTapped: wlogout.running = true }
+    TapHandler {
+        // TODO: Native power menu popup implemente edilecek
+        // Şimdilik tek tıkla ekranı kilitle (en güvenli varsayılan)
+        onTapped: lockCmd.running = true
+    }
 }

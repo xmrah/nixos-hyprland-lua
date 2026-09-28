@@ -3,9 +3,9 @@ import Quickshell
 import QtQuick
 
 // Sovereign Color Palette
-// Catppuccin Mocha + Material You (colors.lua ile senkron)
+// Base dark + Material You (colors.lua ile senkron)
 Singleton {
-    // ── Catppuccin Mocha Base ──────────────────────────────────────────
+    // ── Sovereign Dark Base ──────────────────────────────────────────
     readonly property color base:     "#1e1e2e"
     readonly property color mantle:   "#181825"
     readonly property color crust:    "#11111b"

@@ -1,5 +1,5 @@
 -- Sovereign Color Palette
--- Catppuccin Mocha base + Material You accent (Cyan/Purple)
+-- Base dark + Material You accent (Cyan/Purple)
 -- Single source of truth — tüm modüller bu global'i kullanır.
 -- Kullanım: Colors.cyan, Colors.base, vb.
 
@@ -15,7 +15,7 @@ Colors.shadow            = "rgba(1a1a2eaa)"
 Colors.shadow_inactive   = "rgba(1a1a2e55)"
 
 -- ═══════════════════════════════════════════
--- CATPPUCCIN MOCHA (hex — opacity kuralları, layerrule vb.)
+-- SOVEREIGN DARK (hex — opacity kuralları, layerrule vb.)
 -- ═══════════════════════════════════════════
 Colors.rosewater = "#f5e0dc"
 Colors.flamingo  = "#f2cdcd"

@@ -10,9 +10,9 @@ hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd("kitty"))
 hl.bind(mainMod .. "+Q",      hl.dsp.window.close())
 hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("uwsm stop"))
 hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("dolphin"))
-hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("wofi --show drun"))
+hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("quickshell ipc call launcher toggle"))
 hl.bind(mainMod .. "+T",      hl.dsp.exec_cmd("chromium"))
-hl.bind(mainMod .. "+C",      hl.dsp.exec_cmd("cliphist list | wofi --dmenu -p 'Clipboard' | cliphist decode | wl-copy"))
+hl.bind(mainMod .. "+C",      hl.dsp.exec_cmd("quickshell ipc call clipboard toggle"))
 
 -- ═══════════════════════════════════════════
 -- 2. PENCERE YÖNETİMİ
@@ -21,7 +21,7 @@ hl.bind(mainMod .. "+V",      hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. "+F",      hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. "+P",      hl.dsp.window.pseudo())
 hl.bind(mainMod .. "+J",      hl.dsp.layout("togglesplit"))
-hl.bind(mainMod .. "+Tab",    hl.dsp.exec_cmd("quickshell ipc call default overview toggle"))
+hl.bind(mainMod .. "+Tab",    hl.dsp.exec_cmd("quickshell ipc call overview toggle"))
 
 -- Pencere Boyutlandırma (SUPER+CTRL+Yön)
 hl.bind(mainMod .. "+CTRL+left",  hl.dsp.window.resize({ x = -40, y = 0, relative = true }), { repeating = true })
@@ -70,8 +70,8 @@ hl.bind(mainMod .. "+mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- 6. SİSTEM KONTROL
 -- ═══════════════════════════════════════════
 
--- Bildirim Merkezi (SwayNC)
-hl.bind(mainMod .. "+N", hl.dsp.exec_cmd("swaync-client -t -sw"))
+-- Bildirim Merkezi (Quickshell)
+hl.bind(mainMod .. "+N", hl.dsp.exec_cmd("quickshell ipc call notifications toggle"))
 
 -- Ekran Kilidi
 hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))

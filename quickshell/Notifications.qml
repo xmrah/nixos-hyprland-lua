@@ -18,29 +18,17 @@ Rectangle {
 
     Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }
 
-    Process {
-        id: countProc
-        command: ["swaync-client", "-c"]
-        running: false
-        stdout: SplitParser {
-            onRead: data => {
-                const n = parseInt(data.trim())
-                root.count = isNaN(n) ? 0 : n
-            }
+    // IPC Handler — bildirim sayısını dışarıdan güncellemek için
+    IpcHandler {
+        target: "notifications"
+        function toggle() {
+            // TODO: Quickshell native bildirim paneli implemente edilecek
+            // Şimdilik bildirim sayacını sıfırla
+            root.count = 0
         }
-        onExited: function(exitCode) {
-            if (exitCode !== 0) root.count = 0
+        function updateCount(n) {
+            root.count = n
         }
-    }
-
-    Process { id: toggleProc; command: ["swaync-client", "-t", "-sw"]; running: false }
-
-    Timer {
-        interval: 5000
-        running:  true
-        repeat:   true
-        triggeredOnStart: true
-        onTriggered: if (!countProc.running) countProc.running = true
     }
 
     Row {
@@ -69,6 +57,7 @@ Rectangle {
     }
 
     TapHandler {
-        onTapped: if (!toggleProc.running) toggleProc.running = true
+        // TODO: Native bildirim paneli açılacak
+        onTapped: root.count = 0
     }
 }

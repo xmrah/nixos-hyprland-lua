@@ -78,17 +78,19 @@ hl.config({
         "blur, sovereign-bar",
         "ignorezero, sovereign-bar",
 
-        -- SwayNC — sağdan/fade animasyonu
-        "animation slide, swaync-control-center",
-        "animation fade, swaync-notification-window",
-        "blur, swaync-control-center",
-        "blur, swaync-notification-window",
-        "ignorezero, swaync-control-center",
-        "ignorezero, swaync-notification-window",
+        -- Sovereign Dashboard (Quickshell) — sağdan slide
+        "animation slide, sovereign-dashboard",
+        "blur, sovereign-dashboard",
+        "ignorezero, sovereign-dashboard",
 
-        -- Wofi launcher — ortadan açılır (popin)
-        "animation popin 80%, wofi",
-        "blur, wofi",
-        "ignorezero, wofi",
+        -- Sovereign Launcher (Quickshell) — ortadan açılır
+        "animation popin 80%, sovereign-launcher",
+        "blur, sovereign-launcher",
+        "ignorezero, sovereign-launcher",
+
+        -- Sovereign Notifications (Quickshell) — sağdan fade
+        "animation fade, sovereign-notifications",
+        "blur, sovereign-notifications",
+        "ignorezero, sovereign-notifications",
     },
 })

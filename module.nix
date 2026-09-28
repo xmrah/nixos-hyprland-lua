@@ -53,20 +53,8 @@ in {
     xdg.configFile."quickshell".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/quickshell";
 
-    xdg.configFile."wofi/style.css".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/style.css";
-
-    xdg.configFile."wofi/config".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wofi/config";
-
-    xdg.configFile."swaync/config.json".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/swaync/config.json";
-
-    xdg.configFile."swaync/style.css".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/swaync/style.css";
-
-    xdg.configFile."wlogout/layout".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/wlogout/layout";
+    # Legacy symlink'ler kaldırıldı: wofi, swaync, wlogout
+    # Tüm UI artık Quickshell üzerinden yönetiliyor.
 
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
@@ -97,7 +85,7 @@ in {
     services.swayosd.enable = true;
 
     # ── Clipboard geçmişi daemon — cliphist ───────────────────────────────
-    # binds.lua SUPER+C: cliphist list | wofi --dmenu | cliphist decode | wl-copy
+    # cliphist daemon arka planda clipboard geçmişini toplar.
     systemd.user.services.cliphist = {
       Unit = {
         Description          = "Clipboard history daemon (cliphist)";
@@ -114,74 +102,51 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
-    # ── Bildirim daemon — swaync (quickshell bildirimler hazır olana kadar) ─
-    systemd.user.services.swaync = {
-      Unit = {
-        Description          = "SwayNotificationCenter";
-        PartOf               = [ "graphical-session.target" ];
-        After                = [ "graphical-session.target" ];
-        ConditionEnvironment = "WAYLAND_DISPLAY";
-      };
-      Service = {
-        Type       = "simple";
-        ExecStart  = "${pkgs.swaynotificationcenter}/bin/swaync";
-        ExecReload = "${pkgs.swaynotificationcenter}/bin/swaync-client --reload-config; ${pkgs.swaynotificationcenter}/bin/swaync-client --reload-css";
-        Restart    = "on-failure";
-        RestartSec = "2s";
-      };
-      Install.WantedBy = [ "graphical-session.target" ];
-    };
+    # swaync servisi kaldırıldı — bildirimler Quickshell üzerinden yönetilecek.
 
     # ── Paketler ───────────────────────────────────────────────────────────
     # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
     # Kullanıcının home.packages'ına dokunmasına gerek kalmaz.
     home.packages = with pkgs; [
-      # Sovereign Shell
+      # ── Sovereign Shell ──────────────────────────────────────────────────
       quickshell
 
-      # Geliştirici araçları
+      # ── Geliştirici ─────────────────────────────────────────────────────
       lua-language-server
       lua
 
-      # Terminal (binds.lua: SUPER+Return)
+      # ── Terminal (binds.lua: SUPER+Return) ──────────────────────────────
       kitty
 
-      # Launcher (binds.lua: SUPER+R)
-      wofi
-
-      # Oturum kapatma (quickshell Power.qml / wlogout)
-      wlogout
-
-      # Wallpaper engine (autostart.lua: awww)
+      # ── Wallpaper (autostart.lua: awww) ─────────────────────────────────
       awww
 
-      # Ekran kilidi + boşta kalma (binds.lua: SUPER+L / autostart.lua)
+      # ── Ekran kilidi + boşta kalma ──────────────────────────────────────
       hyprlock
       hypridle
 
-      # Ekran görüntüsü (binds.lua: SUPER+SHIFT/ALT/CTRL+S)
+      # ── Ekran görüntüsü (binds.lua: SUPER+SHIFT/ALT/CTRL+S) ────────────
       grim
       slurp
       swappy
       wl-clipboard
 
-      # Parlaklık — DDC/CI üzerinden harici monitör kontrolü (binds.lua + Brightness.qml)
+      # ── Parlaklık — DDC/CI (binds.lua + Brightness.qml) ────────────────
       ddcutil
 
-      # Bildirim
-      swaynotificationcenter
+      # ── Bildirim (libnotify CLI) ────────────────────────────────────────
       libnotify
 
-      # Ağ yönetimi (autostart.lua: nm-applet)
+      # ── Ağ yönetimi (autostart.lua: nm-applet) ─────────────────────────
       networkmanagerapplet
 
-      # Clipboard geçmişi (binds.lua: SUPER+C)
+      # ── Clipboard geçmişi (cliphist daemon) ─────────────────────────────
       cliphist
 
-      # Medya kontrolü (binds.lua: XF86AudioPlay/Next/Prev/Stop)
+      # ── Medya kontrolü (binds.lua: XF86AudioPlay/Next/Prev/Stop) ────────
       playerctl
 
-      # Ses yönetimi (quickshell Volume.qml: tıkla → pavucontrol)
+      # ── Ses yönetimi (Volume.qml: tıkla → pavucontrol) ─────────────────
       pavucontrol
     ];
   };
