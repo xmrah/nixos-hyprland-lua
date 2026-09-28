@@ -10,6 +10,7 @@ Rectangle {
     id: root
 
     property bool   netConnected: true
+    property bool   isEthernet:   false
     property string netSsid:      ""
 
     implicitHeight: Appearance.size.widgetH
@@ -26,16 +27,27 @@ Rectangle {
     Behavior on color        { ColorAnimation { duration: Appearance.anim.fast.dur } }
     Behavior on border.color { ColorAnimation { duration: Appearance.anim.fast.dur } }
 
-    // Ağ durumu kontrolü
+    // Ağ durumu kontrolü (Locale-Agnostic WiFi + Ethernet Fallback)
     Process {
         id: netProc
-        command: ["sh", "-c", "nmcli -t -f active,ssid dev wifi 2>/dev/null | grep '^yes' | cut -d: -f2 | head -1"]
+        command: ["sh", "-c", "wifi=$(LC_ALL=C nmcli -t -f active,ssid dev wifi 2>/dev/null | grep '^yes' | cut -d: -f2 | head -1); if [ -n \"$wifi\" ]; then echo \"WIFI:$wifi\"; elif ip route show default 2>/dev/null | grep -q 'proto'; then echo \"ETH:Kablolu\"; else echo \"NONE\"; fi"]
         running: false
         stdout: SplitParser {
             onRead: data => {
                 const s = data.trim()
-                root.netConnected = s.length > 0
-                root.netSsid      = s
+                if (s.startsWith("WIFI:")) {
+                    root.netConnected = true
+                    root.isEthernet   = false
+                    root.netSsid      = s.substring(5)
+                } else if (s.startsWith("ETH:")) {
+                    root.netConnected = true
+                    root.isEthernet   = true
+                    root.netSsid      = "Kablolu Ağ"
+                } else {
+                    root.netConnected = false
+                    root.isEthernet   = false
+                    root.netSsid      = "Bağlantı Yok"
+                }
             }
         }
     }
@@ -49,10 +61,10 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 8
 
-        // Ağ İkonu
+        // Ağ İkonu (WiFi vs Ethernet)
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: root.netConnected ? "󰤨" : "󰤮"
+            text: root.netConnected ? (root.isEthernet ? "󰈀" : "󰤨") : "󰤮"
             font.family:    "JetBrainsMono Nerd Font"
             font.pixelSize: 13
             color: root.netConnected ? "#a6e3a1" : "#f38ba8"

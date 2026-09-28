@@ -80,7 +80,7 @@ QtObject {
     }
 
     property var _timer: Timer {
-        interval: 3000; running: true; repeat: true; triggeredOnStart: true
+        interval: 3000; running: GlobalStates.dashboardOpen; repeat: true; triggeredOnStart: true
         onTriggered: {
             if (!svc._cpuProc.running) svc._cpuProc.running = true
             if (!svc._gpuProc.running) svc._gpuProc.running = true

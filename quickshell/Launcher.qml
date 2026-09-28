@@ -100,13 +100,16 @@ PanelWindow {
 
     Process {
         id: clipboardDecodeProc
-        command: ["sh", "-c", ""]
+        command: ["sh", "-c", "cliphist decode | wl-copy"]
+        stdinEnabled: true
         running: false
     }
 
     function selectClipboardItem(item) {
-        clipboardDecodeProc.command = ["sh", "-c", "echo '" + item.replace(/'/g, "'\\''") + "' | cliphist decode | wl-copy"]
-        clipboardDecodeProc.running = true
+        if (!clipboardDecodeProc.running) {
+            clipboardDecodeProc.running = true
+            clipboardDecodeProc.write(item + "\n")
+        }
         closeLauncher()
     }
 

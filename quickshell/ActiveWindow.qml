@@ -1,14 +1,16 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
+import Quickshell.Wayland
 
-// Aktif pencere başlığı — hyprctl activewindow, 500ms poll
-// Tıkla → aktif pencereyi kapat (killactive)
+// ═══════════════════════════════════════════════════════════════════
+// Sovereign Active Window — Wayland Native Toplevel (Event-Driven)
+// 0 Process, 0 Fork, 0ms Gecikme. Tıkla → aktif pencereyi kapat.
+// ═══════════════════════════════════════════════════════════════════
 Rectangle {
     id: root
 
-    property string windowTitle: ""
-    readonly property bool hasContent: windowTitle.length > 0
+    readonly property string windowTitle: ToplevelManager.activeToplevel?.title ?? ""
+    readonly property bool   hasContent:  windowTitle.length > 0
 
     visible:        hasContent
     implicitHeight: Appearance.size.widgetH
@@ -17,28 +19,6 @@ Rectangle {
     color:          Qt.rgba(0.118, 0.118, 0.180, 0.65)
     border.color:   Qt.rgba(0.537, 0.706, 0.980, 0.18)
     border.width:   1
-
-    Process { id: killProc; command: ["hyprctl", "dispatch", "killactive"]; running: false }
-
-    Process {
-        id: titleProc
-        command: ["sh", "-c", "hyprctl activewindow 2>/dev/null | sed -n 's/^\\s*title: //p' | head -1"]
-        running: false
-        stdout: SplitParser {
-            onRead: data => root.windowTitle = data.trim()
-        }
-        onExited: function(exitCode) {
-            if (exitCode !== 0) root.windowTitle = ""
-        }
-    }
-
-    Timer {
-        interval: 500
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: if (!titleProc.running) titleProc.running = true
-    }
 
     Text {
         id: titleText
@@ -51,5 +31,11 @@ Rectangle {
         color:          "#89b4fa"
     }
 
-    TapHandler { onTapped: if (!killProc.running) killProc.running = true }
+    TapHandler {
+        onTapped: {
+            if (ToplevelManager.activeToplevel) {
+                ToplevelManager.activeToplevel.close()
+            }
+        }
+    }
 }

@@ -1,29 +1,36 @@
-# nixos-hyprland-lua - Framework Yönetim Paneli
+# nixos-hyprland-lua - Framework Yönetim & Kalite Kontrol Paneli
 # Author: xmrah (Sovereign Edition)
 
 # Varsayılan yardım menüsü
 default:
     @just --list
 
-# Tüm değişiklikleri Codeberg + GitHub'a gönder
+# Tüm değişiklikleri doğrula ve uzak repolara senkronize et
 sync message="framework update":
     just check
+    just audit
     git add .
-    git commit -m "feat(lua): {{message}} - $(date +'%Y-%m-%d %H:%M')" || echo "Değişiklik yok."
+    git commit -m "feat: {{message}} - $(date +'%Y-%m-%d %H:%M')" || echo "Değişiklik yok."
     git push
 
-# Hyprland konfigürasyonunu anında yenile
+# Hyprland ve Quickshell oturumunu anında yenile
 reload:
     hyprctl reload
+    systemctl --user restart quickshell
+    @echo "✅ Hyprland ve Quickshell yenilendi."
 
-# Lua Syntax ve Hyprland API doğrulaması
+# Lua Syntax ve Hyprland Yapılandırma Doğrulaması
 check:
-    @echo "🔍 Checking Lua syntax..."
-    @luac -p lua/*.lua || (echo "❌ Lua Syntax Error!"; exit 1)
-    @echo "🔍 Checking Hyprland config..."
+    @echo "🔍 [1/2] Lua sözdizimi doğrulanıyor..."
+    @find lua -name "*.lua" -exec luac -p {} +
+    @echo "🔍 [2/2] Hyprland sözdizimi doğrulanıyor..."
     @hyprctl configerrors
-    @echo "✅ Everything looks good."
+    @echo "✅ Sözdizimi testleri BAŞARILI."
 
-# Logları takip et
+# Gray-Hat Güvenlik, Fork Bomb, QML Bütünlük ve Sızıntı Denetimi
+audit:
+    @python3 scripts/audit.py
+
+# Canlı Hyprland log akışı
 logs:
     hyprctl rollinglog
