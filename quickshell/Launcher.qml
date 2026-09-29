@@ -22,6 +22,7 @@ PanelWindow {
     readonly property bool isClipboard: GlobalStates.clipboardOpen && !GlobalStates.launcherOpen
     property var filteredApps: []
     property var clipboardItems: []
+    property var filteredClipboard: []
     property int selectedIndex: 0
 
     onVisibleChanged: {
@@ -29,8 +30,13 @@ PanelWindow {
             searchField.text = ""
             selectedIndex = 0
             searchField.forceActiveFocus()
-            if (isClipboard) clipboardProc.running = true
-            else updateAppFilter("")
+            if (isClipboard) {
+                clipboardItems = []
+                filteredClipboard = []
+                clipboardProc.running = true
+            } else {
+                updateAppFilter("")
+            }
         }
     }
 
@@ -80,35 +86,48 @@ PanelWindow {
         selectedIndex = 0
     }
 
+    // ── Clipboard Filtering ──────────────────────────────────────────
+    function updateClipboardFilter(query) {
+        if (!query || query.length === 0) {
+            filteredClipboard = clipboardItems.slice(0, 8)
+        } else {
+            let q = query.toLowerCase()
+            let filtered = []
+            for (let i = 0; i < clipboardItems.length; i++) {
+                let item = clipboardItems[i]
+                if (item.toLowerCase().includes(q)) {
+                    filtered.push(item)
+                    if (filtered.length >= 8) break
+                }
+            }
+            filteredClipboard = filtered
+        }
+        selectedIndex = 0
+    }
+
     // ── Clipboard Data ───────────────────────────────────────────────
     Process {
         id: clipboardProc
         command: ["cliphist", "list"]
         running: false
-        stdout: SplitParser {
-            onRead: data => {
-                let items = root.clipboardItems
-                let line = data.trim()
-                if (line.length > 0) items.push(line)
-                root.clipboardItems = items
+        stdout: StdioCollector {
+            id: clipCollector
+        }
+        onExited: function(exitCode) {
+            if (exitCode === 0 && clipCollector.text.length > 0) {
+                let lines = clipCollector.text.trim().split("\n").filter(l => l.length > 0)
+                root.clipboardItems = lines
+                root.updateClipboardFilter(searchField.text)
+            } else {
+                root.clipboardItems = []
+                root.filteredClipboard = []
             }
         }
-        onRunningChanged: {
-            if (running) root.clipboardItems = []
-        }
-    }
-
-    Process {
-        id: clipboardDecodeProc
-        command: ["sh", "-c", "cliphist decode | wl-copy"]
-        stdinEnabled: true
-        running: false
     }
 
     function selectClipboardItem(item) {
-        if (!clipboardDecodeProc.running) {
-            clipboardDecodeProc.running = true
-            clipboardDecodeProc.write(item + "\n")
+        if (item && item.length > 0) {
+            Quickshell.execDetached(["sh", "-c", "printf '%s' \"$1\" | cliphist decode | wl-copy", "_", item])
         }
         closeLauncher()
     }
@@ -202,14 +221,15 @@ PanelWindow {
                         selectByMouse:  true
 
                         onTextChanged: {
-                            if (!root.isClipboard) root.updateAppFilter(text)
+                            if (root.isClipboard) root.updateClipboardFilter(text)
+                            else root.updateAppFilter(text)
                         }
 
                         // Keyboard navigation
                         Keys.onPressed: event => {
                             let maxIdx = root.isClipboard
-                                ? Math.min(root.clipboardItems.length, 8) - 1
-                                : root.filteredApps.length - 1
+                                ? Math.max(0, root.filteredClipboard.length - 1)
+                                : Math.max(0, root.filteredApps.length - 1)
 
                             if (event.key === Qt.Key_Down) {
                                 root.selectedIndex = Math.min(root.selectedIndex + 1, maxIdx)
@@ -219,8 +239,8 @@ PanelWindow {
                                 event.accepted = true
                             } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                                 if (root.isClipboard) {
-                                    if (root.selectedIndex < root.clipboardItems.length)
-                                        root.selectClipboardItem(root.clipboardItems[root.selectedIndex])
+                                    if (root.selectedIndex < root.filteredClipboard.length)
+                                        root.selectClipboardItem(root.filteredClipboard[root.selectedIndex])
                                 } else {
                                     if (root.selectedIndex < root.filteredApps.length)
                                         root.launchApp(root.filteredApps[root.selectedIndex])
@@ -328,7 +348,7 @@ PanelWindow {
 
                 // Clipboard mode
                 Repeater {
-                    model: root.isClipboard ? Math.min(root.clipboardItems.length, 8) : 0
+                    model: root.isClipboard ? Math.min(root.filteredClipboard.length, 8) : 0
                     delegate: Rectangle {
                         Layout.fillWidth: true
                         height: 44
@@ -344,7 +364,7 @@ PanelWindow {
 
                         Behavior on color { ColorAnimation { duration: 100 } }
 
-                        readonly property string clipText: root.clipboardItems[index] || ""
+                        readonly property string clipText: root.filteredClipboard[index] || ""
 
                         RowLayout {
                             anchors {
@@ -387,7 +407,7 @@ PanelWindow {
                 Item {
                     Layout.fillWidth: true
                     height: 80
-                    visible: (root.isClipboard && root.clipboardItems.length === 0)
+                    visible: (root.isClipboard && root.filteredClipboard.length === 0)
                              || (!root.isClipboard && root.filteredApps.length === 0)
 
                     ColumnLayout {

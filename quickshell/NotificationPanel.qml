@@ -10,6 +10,7 @@ import Quickshell.Wayland
 // ═══════════════════════════════════════════════════════════════════
 PanelWindow {
     id: root
+    exclusionMode:               ExclusionMode.Ignore
     WlrLayershell.layer:         WlrLayer.Overlay
     WlrLayershell.namespace:     "sovereign-notifications"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand

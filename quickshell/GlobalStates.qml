@@ -11,7 +11,6 @@ QtObject {
     property bool launcherOpen: false
     property bool clipboardOpen: false
     property bool notificationPanelOpen: false
-    property bool powerMenuOpen: false
 
     // ── Bar Durumu ───────────────────────────────────────────────────
     property bool barVisible: true

@@ -16,7 +16,6 @@ ShellRoot {
     Launcher {}
     NotificationToast {}
     NotificationPanel {}
-    PowerOverlay {}
 
     // ── IPC Handlers ─────────────────────────────────────────────────
     IpcHandler {
@@ -53,13 +52,6 @@ ShellRoot {
         target: "notifications"
         function toggle() {
             GlobalStates.notificationPanelOpen = !GlobalStates.notificationPanelOpen
-        }
-    }
-
-    IpcHandler {
-        target: "power"
-        function toggle() {
-            GlobalStates.powerMenuOpen = !GlobalStates.powerMenuOpen
         }
     }
 

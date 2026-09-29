@@ -8,6 +8,7 @@ import Quickshell.Services.Mpris
 
 PanelWindow {
     id: root
+    exclusionMode:               ExclusionMode.Ignore
     WlrLayershell.layer:         WlrLayer.Overlay
     WlrLayershell.namespace:     "sovereign-dashboard"
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -397,9 +398,15 @@ PanelWindow {
 
                 TapHandler { 
                     onTapped: { 
-                        Quickshell.execDetached(["sh", "-c", "/persist/nixos-config/scripts/dl-toggle.sh"]); 
-                        vaultCard.isOpen = !vaultCard.isOpen;
+                        Quickshell.execDetached(["dl-toggle"]); 
+                        vaultTimer.restart();
                     } 
+                }
+                Timer {
+                    id: vaultTimer
+                    interval: 300
+                    running: false
+                    onTriggered: checkVaultProc.running = true
                 }
                 HoverHandler { cursorShape: Qt.PointingHandCursor }
             }

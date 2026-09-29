@@ -11,11 +11,9 @@ Workspaces 1.0 Workspaces.qml
 Clock 1.0 Clock.qml
 Notifications 1.0 Notifications.qml
 Tray 1.0 Tray.qml
-Power 1.0 Power.qml
 Overview 1.0 Overview.qml
 Dashboard 1.0 Dashboard.qml
 DashboardToggle 1.0 DashboardToggle.qml
 Launcher 1.0 Launcher.qml
 NotificationToast 1.0 NotificationToast.qml
 NotificationPanel 1.0 NotificationPanel.qml
-PowerOverlay 1.0 PowerOverlay.qml

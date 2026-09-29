@@ -30,8 +30,7 @@ Singleton {
                 notif: notif
             })
             if (items.length > 3) {
-                let removed = items.pop()
-                if (removed && removed.notif) removed.notif.dismiss()
+                items.pop()
             }
             root.toastList = [...items]
         }
@@ -44,13 +43,11 @@ Singleton {
 
     property var toastList: []
 
+    // Toast popup'ı ekrandan kapatır (Bildirim sunucusundan silmez, geçmişte kalır)
     function dismissToast(index) {
         let items = root.toastList
         if (index >= 0 && index < items.length) {
-            let removed = items.splice(index, 1)
-            if (removed[0] && removed[0].notif && typeof removed[0].notif.dismiss === "function") {
-                try { removed[0].notif.dismiss() } catch(e) {}
-            }
+            items.splice(index, 1)
             root.toastList = [...items]
         }
     }

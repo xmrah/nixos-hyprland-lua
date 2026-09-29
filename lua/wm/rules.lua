@@ -92,10 +92,5 @@ hl.config({
         "animation fade, sovereign-notifications",
         "blur, sovereign-notifications",
         "ignorezero, sovereign-notifications",
-
-        -- Sovereign Power Menu (Quickshell) — fade animasyon
-        "animation fade, sovereign-power",
-        "blur, sovereign-power",
-        "ignorezero, sovereign-power",
     },
 })

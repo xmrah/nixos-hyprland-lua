@@ -54,11 +54,10 @@ WlrLayershell {
         Item { Layout.fillWidth: true }
 
         // ═══════════════════════════════════════════
-        // SAĞ BÖLGE — Tray → Notif → QuickSettings/Hub → Power
+        // SAĞ BÖLGE — Tray → Notif → QuickSettings / Hub Capsule
         // ═══════════════════════════════════════════
         Tray            { Layout.alignment: Qt.AlignVCenter }
         Notifications   { Layout.alignment: Qt.AlignVCenter }
         DashboardToggle { Layout.alignment: Qt.AlignVCenter }
-        Power           { Layout.alignment: Qt.AlignVCenter }
     }
 }

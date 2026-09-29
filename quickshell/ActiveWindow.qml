@@ -4,7 +4,7 @@ import Quickshell.Wayland
 
 // ═══════════════════════════════════════════════════════════════════
 // Sovereign Active Window — Wayland Native Toplevel (Event-Driven)
-// 0 Process, 0 Fork, 0ms Gecikme. Tıkla → aktif pencereyi kapat.
+// 0 Process, 0 Fork, 0ms Gecikme. Bilgilendirici aktif pencere başlığı.
 // ═══════════════════════════════════════════════════════════════════
 Rectangle {
     id: root
@@ -29,13 +29,5 @@ Rectangle {
         font.pixelSize: Appearance.size.textSize
         font.weight:    Font.DemiBold
         color:          "#89b4fa"
-    }
-
-    TapHandler {
-        onTapped: {
-            if (ToplevelManager.activeToplevel) {
-                ToplevelManager.activeToplevel.close()
-            }
-        }
     }
 }
