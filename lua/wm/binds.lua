@@ -6,12 +6,11 @@ local mainMod = "SUPER"
 -- ═══════════════════════════════════════════
 -- 1. UYGULAMALAR
 -- ═══════════════════════════════════════════
-hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd("kitty"))
+hl.bind(mainMod .. "+Return", hl.dsp.exec_cmd("uwsm app -- kitty"))
 hl.bind(mainMod .. "+Q",      hl.dsp.window.close())
-hl.bind(mainMod .. "+M",      hl.dsp.exec_cmd("quickshell ipc call dashboard toggle"))
-hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("dolphin"))
+hl.bind(mainMod .. "+E",      hl.dsp.exec_cmd("uwsm app -- dolphin"))
 hl.bind(mainMod .. "+R",      hl.dsp.exec_cmd("quickshell ipc call launcher toggle"))
-hl.bind(mainMod .. "+T",      hl.dsp.exec_cmd("chromium"))
+hl.bind(mainMod .. "+T",      hl.dsp.exec_cmd("uwsm app -- chromium"))
 hl.bind(mainMod .. "+C",      hl.dsp.exec_cmd("quickshell ipc call clipboard toggle"))
 
 -- ═══════════════════════════════════════════
@@ -76,6 +75,9 @@ hl.bind(mainMod .. "+N", hl.dsp.exec_cmd("quickshell ipc call notifications togg
 -- Kontrol Merkezi / Hub (Quickshell)
 hl.bind(mainMod .. "+D", hl.dsp.exec_cmd("quickshell ipc call dashboard toggle"))
 
+-- Gaming / Düşük Gecikme Modu (Saf 180Hz)
+hl.bind(mainMod .. "+G", function() GamingMode.toggle() end)
+
 -- Ekran Kilidi
 hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))
 
@@ -88,6 +90,7 @@ hl.bind(mainMod .. "+L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"), { repeating = true, locked = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"), { repeating = true, locked = true })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
+hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"), { locked = true })
 
 -- Medya Kontrolü (playerctl)
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })

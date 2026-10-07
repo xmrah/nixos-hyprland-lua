@@ -13,16 +13,32 @@ hl.config({
         "float, class:^(.blueman-manager-wrapped)$",
         "float, class:^(org.kde.polkit-kde-authentication-agent-1)$",
 
+        -- Portal ve Paylaşım Arayüzleri
+        "float, class:^(xdg-desktop-portal-gtk)$",
+        "float, class:^(hyprland-share-picker)$",
+
         -- Dosya diyalogları
         "float, title:^(Open File)$",
         "float, title:^(Save File)$",
         "float, title:^(Confirm to replace files)$",
         "float, title:^(File Operation Progress)$",
 
+        -- Picture-in-Picture (Chromium / Firefox / Zen)
+        "float, title:^(Picture-in-Picture)$",
+        "float, title:^(Picture in picture)$",
+        "pin, title:^(Picture-in-Picture)$",
+        "pin, title:^(Picture in picture)$",
+        "keepaspectratio, title:^(Picture-in-Picture)$",
+        "keepaspectratio, title:^(Picture in picture)$",
+
         -- Medya ve araçlar
         "float, class:^(mpv)$",
         "float, class:^(imv)$",
         "float, class:^(org.gnome.Calculator)$",
+
+        -- Steam Popups & Diyalogları (Ana pencere hariç float)
+        "float, class:^(steam)$",
+        "tile, class:^(steam)$, title:^(Steam)$",
     },
 })
 
@@ -31,10 +47,6 @@ hl.config({
 -- ═══════════════════════════════════════════
 hl.config({
     windowrulev2 = {
-        -- Tarayıcılar → Workspace 1
-        "workspace 1, class:^(chromium)$",
-        "workspace 1, class:^(zen)$",
-
         -- Terminal → Workspace 2
         "workspace 2, class:^(kitty)$",
 
@@ -45,6 +57,8 @@ hl.config({
         "workspace 4, class:^(code)$",
         "workspace 4, class:^(Code)$",
         "workspace 4, class:^(codium)$",
+        "workspace 4, class:^(vscodium)$",
+        "workspace 4, class:^(antigravity-ide)$",
 
         -- İletişim → Workspace 8
         "workspace 8, class:^(discord)$",
@@ -65,11 +79,26 @@ hl.config({
         "opacity 0.95 0.90, class:^(code)$",
         "opacity 0.95 0.90, class:^(Code)$",
         "opacity 0.95 0.90, class:^(codium)$",
+        "opacity 0.95 0.90, class:^(vscodium)$",
+        "opacity 0.95 0.90, class:^(antigravity-ide)$",
     },
 })
 
 -- ═══════════════════════════════════════════
--- 4. LAYER RULES (Bar/Panel Glassmorphism)
+-- 4. DAVRANIŞ VE ETKİNLİK KURALLARI
+-- ═══════════════════════════════════════════
+hl.config({
+    windowrulev2 = {
+        -- Tam ekranda hypridle'ın ekranı kapatmasını önle (Film/Oyun)
+        "idleinhibit fullscreen, fullscreen:1",
+
+        -- Chromium ve Electron uygulamalarının pencere açılışında sahte maximize isteklerini bastır
+        "suppressevent maximize, class:.*",
+    },
+})
+
+-- ═══════════════════════════════════════════
+-- 5. LAYER RULES (Bar/Panel Glassmorphism)
 -- ═══════════════════════════════════════════
 hl.config({
     layerrule = {

@@ -29,7 +29,35 @@ local function get_ws_id(w)
 end
 
 -- ═══════════════════════════════════════════
--- 1. WINDOW OPEN — Auto-Tab + Focus Stealing Prevention
+-- 1. GAMING / DÜŞÜK GECİKME MODU (SUPER+G)
+-- ═══════════════════════════════════════════
+GamingMode = {
+    active = false,
+}
+
+function GamingMode.toggle()
+    GamingMode.active = not GamingMode.active
+    if GamingMode.active then
+        hl.config({
+            animations = { enabled = false },
+            decoration = {
+                blur = { enabled = false },
+                shadow = { enabled = false },
+            },
+        })
+    else
+        hl.config({
+            animations = { enabled = true },
+            decoration = {
+                blur = { enabled = true },
+                shadow = { enabled = true },
+            },
+        })
+    end
+end
+
+-- ═══════════════════════════════════════════
+-- 2. WINDOW OPEN — Auto-Tab + Focus Stealing Prevention
 -- ═══════════════════════════════════════════
 hl.on("window.open", function(w)
     if not w then return end
@@ -52,14 +80,15 @@ hl.on("window.open", function(w)
         ws_window_counts[ws_id] = (ws_window_counts[ws_id] or 0) + 1
 
         if ws_window_counts[ws_id] >= 3 and not w.floating then
-            Utils.async_cmd("hyprctl dispatch togglegroup")
+            -- Native C++ dispatcher çağrısı (fork yok)
+            hl.dispatch(hl.dsp.group.toggle())
             Utils.notify("Sovereign Auto-Tab", "Alan daraldığı için Geometrik Koruma (Sekme) aktif edildi.")
         end
     end
 end)
 
 -- ═══════════════════════════════════════════
--- 2. WINDOW CLOSE — Pencere sayacı güncelle
+-- 3. WINDOW CLOSE — Pencere sayacı güncelle
 -- ═══════════════════════════════════════════
 hl.on("window.close", function(w)
     if not w then return end
@@ -71,13 +100,15 @@ hl.on("window.close", function(w)
 end)
 
 -- ═══════════════════════════════════════════
--- 3. ZEN MODE (Focus Tracker)
+-- 4. ZEN MODE (Focus Tracker)
 -- ═══════════════════════════════════════════
 hl.on("window.active", function(w)
     if not w then return end
 
-    local is_zen_app = (w.class == "mpv" or w.class == "gamescope" or w.class == "steam_app")
+    -- Manuel GamingMode aktifken ayarları ezme
+    if GamingMode.active then return end
 
+    local is_zen_app = (w.class == "mpv" or w.class == "gamescope" or w.class == "steam_app")
     local is_fullscreen = (w.fullscreen == true or w.fullscreen == 1 or w.fullscreen == 2)
 
     if is_zen_app or is_fullscreen then
@@ -94,4 +125,3 @@ hl.on("window.active", function(w)
 end)
 
 print("[wm/events.lua] Zeki ve Non-Blocking Hooks yüklendi.")
-
