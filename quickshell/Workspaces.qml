@@ -69,6 +69,48 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 6
 
+        // ── 0. SOVEREIGN / NIXOS BAŞLATICI BUTONU ──
+        Rectangle {
+            id: launcherBtn
+            width: 26
+            height: 26
+            radius: Appearance.size.radiusSm
+            anchors.verticalCenter: parent.verticalCenter
+            color: launcherHov.hovered
+                ? Qt.rgba(0.796, 0.651, 0.969, 0.25)
+                : (GlobalStates.launcherOpen ? Qt.rgba(0.796, 0.651, 0.969, 0.15) : "transparent")
+            border.color: GlobalStates.launcherOpen ? Colors.mauve : "transparent"
+            border.width: 1
+
+            Behavior on color { ColorAnimation { duration: 150 } }
+            Behavior on border.color { ColorAnimation { duration: 150 } }
+
+            Text {
+                anchors.centerIn: parent
+                text: ""
+                font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 16
+                color: launcherHov.hovered || GlobalStates.launcherOpen ? Colors.mauve : Colors.blue
+                Behavior on color { ColorAnimation { duration: 150 } }
+            }
+
+            HoverHandler { id: launcherHov; cursorShape: Qt.PointingHandCursor }
+            TapHandler {
+                onTapped: {
+                    GlobalStates.launcherOpen = !GlobalStates.launcherOpen
+                    if (GlobalStates.launcherOpen) GlobalStates.clipboardOpen = false
+                }
+            }
+        }
+
+        // İnce Ayırıcı
+        Rectangle {
+            width: 1
+            height: 14
+            anchors.verticalCenter: parent.verticalCenter
+            color: Qt.rgba(1, 1, 1, 0.15)
+        }
+
         Repeater {
             model: 9
 

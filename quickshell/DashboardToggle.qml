@@ -51,9 +51,40 @@ Rectangle {
             }
         }
     }
+    property bool   btPowered:   false
+    property bool   btConnected: false
+    property string btDevice:    ""
+
+    Process {
+        id: btProc
+        command: ["sh", "-c", "if bluetoothctl show 2>/dev/null | grep -q 'Powered: yes'; then dev=$(bluetoothctl devices Connected 2>/dev/null | head -1 | cut -d' ' -f3-); if [ -n \"$dev\" ]; then echo \"CONN:$dev\"; else echo \"ON\"; fi; else echo \"OFF\"; fi"]
+        running: false
+        stdout: SplitParser {
+            onRead: data => {
+                const s = data.trim()
+                if (s.startsWith("CONN:")) {
+                    root.btPowered = true
+                    root.btConnected = true
+                    root.btDevice = s.substring(5)
+                } else if (s === "ON") {
+                    root.btPowered = true
+                    root.btConnected = false
+                    root.btDevice = ""
+                } else {
+                    root.btPowered = false
+                    root.btConnected = false
+                    root.btDevice = ""
+                }
+            }
+        }
+    }
+
     Timer {
         interval: 10000; running: true; repeat: true; triggeredOnStart: true
-        onTriggered: if (!netProc.running) netProc.running = true
+        onTriggered: {
+            if (!netProc.running) netProc.running = true
+            if (!btProc.running) btProc.running = true
+        }
     }
 
     Row {
@@ -68,6 +99,15 @@ Rectangle {
             font.family:    "JetBrainsMono Nerd Font"
             font.pixelSize: 13
             color: root.netConnected ? "#a6e3a1" : "#f38ba8"
+        }
+
+        // Bluetooth İkonu
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: root.btConnected ? "󰂱" : (root.btPowered ? "󰂯" : "󰂲")
+            font.family:    "JetBrainsMono Nerd Font"
+            font.pixelSize: 13
+            color: root.btConnected ? "#89b4fa" : (root.btPowered ? Colors.subtext : Qt.rgba(1, 1, 1, 0.25))
         }
 
         // Ses İkonu + Seviye

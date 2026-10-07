@@ -133,7 +133,12 @@ PanelWindow {
     }
 
     function launchApp(entry) {
-        entry.execute()
+        if (entry.id && entry.id.length > 0) {
+            let appId = entry.id.endsWith(".desktop") ? entry.id : (entry.id + ".desktop")
+            Quickshell.execDetached(["uwsm", "app", "--", appId])
+        } else if (typeof entry.execute === "function") {
+            entry.execute()
+        }
         closeLauncher()
     }
 

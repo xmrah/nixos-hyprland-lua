@@ -19,26 +19,22 @@ Rectangle {
         id: label
         anchors.centerIn: parent
         font.family:      "JetBrainsMono Nerd Font"
-        font.pixelSize:   15
+        font.pixelSize:   13
         font.weight:      Font.Bold
         font.letterSpacing: 0.5
         color:            "#fab387"
     }
 
     Timer {
-        interval: 10000; running: true; repeat: true; triggeredOnStart: true
-        onTriggered: label.text = root.showDate
-            ? Qt.formatDateTime(new Date(), "ddd d MMM")
-            : Qt.formatDateTime(new Date(), "hh:mm")
+        interval: 1000; running: true; repeat: true; triggeredOnStart: true
+        onTriggered: label.text = Qt.formatDateTime(new Date(), "hh:mm · ddd d MMM")
     }
 
     HoverHandler { id: hov }
     TapHandler {
         onTapped: {
-            root.showDate = !root.showDate
-            label.text = root.showDate
-                ? Qt.formatDateTime(new Date(), "ddd d MMM")
-                : Qt.formatDateTime(new Date(), "hh:mm")
+            GlobalStates.notificationPanelOpen = !GlobalStates.notificationPanelOpen
+            if (GlobalStates.notificationPanelOpen) GlobalStates.dashboardOpen = false
         }
     }
 }
