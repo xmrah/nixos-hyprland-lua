@@ -626,11 +626,11 @@ PanelWindow {
 
                     Process {
                         id: checkVaultProc
-                        command: ["sh", "-c", "stat -c '%U' $HOME/.local/share/SecureDownloads 2>/dev/null || echo 'root'"]
+                        command: ["sh", "-c", "[ \"$(stat -c '%U' \"$HOME/.local/share/SecureDownloads\" 2>/dev/null)\" = \"$USER\" ] && echo 'open' || echo 'closed'"]
                         running: false
                         stdout: SplitParser {
                             onRead: data => {
-                                vaultCard.isOpen = (data.trim() === "xmrah");
+                                vaultCard.isOpen = (data.trim() === "open");
                             }
                         }
                     }

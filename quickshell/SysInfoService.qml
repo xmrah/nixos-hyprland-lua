@@ -64,7 +64,7 @@ QtObject {
     }
 
     property var _psProc: Process {
-        command: ["/home/xmrah/Projects/nixos-hyprland-lua/scripts/top-procs.py"]
+        command: ["sh", "-c", "ps -eo comm,%mem --sort=-%mem | awk 'NR>1 && NR<=6 {printf \"%s|%.1f%%\\n\", $1, $2}'"]
         running: false
         property var tempArr: []
         stdout: SplitParser {
