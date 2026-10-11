@@ -1,11 +1,12 @@
--- Sovereign Window Rules
--- Tüm kurallar windowrulev2 formatında (v1 deprecated, 0.46+)
+-- Sovereign Window & Layer Rules
+-- Unified Rules Table — Hyprland 0.56+
+-- Not: Tek bir hl.config bloğunda toplanarak anahtarların birbirini ezmesi (overwrite) engellenmiştir.
 
--- ═══════════════════════════════════════════
--- 1. FLOAT KURALLARI
--- ═══════════════════════════════════════════
 hl.config({
     windowrulev2 = {
+        -- ═══════════════════════════════════════════
+        -- 1. FLOAT KURALLARI
+        -- ═══════════════════════════════════════════
         -- Sistem araçları
         "float, class:^(pavucontrol)$",
         "float, class:^(blueman-manager)$",
@@ -39,14 +40,10 @@ hl.config({
         -- Steam Popups & Diyalogları (Ana pencere hariç float)
         "float, class:^(steam)$",
         "tile, class:^(steam)$, title:^(Steam)$",
-    },
-})
 
--- ═══════════════════════════════════════════
--- 2. WORKSPACE ATAMALARI
--- ═══════════════════════════════════════════
-hl.config({
-    windowrulev2 = {
+        -- ═══════════════════════════════════════════
+        -- 2. WORKSPACE ATAMALARI
+        -- ═══════════════════════════════════════════
         -- Terminal → Workspace 2
         "workspace 2, class:^(kitty)$",
 
@@ -67,28 +64,20 @@ hl.config({
         -- Müzik → Workspace 9
         "workspace 9, class:^(Spotify)$",
         "workspace 9, title:^(Spotify)$",
-    },
-})
 
--- ═══════════════════════════════════════════
--- 3. OPASİTE (Glassmorphism derinliği)
--- ═══════════════════════════════════════════
-hl.config({
-    windowrulev2 = {
+        -- ═══════════════════════════════════════════
+        -- 3. OPASİTE (Glassmorphism derinliği)
+        -- ═══════════════════════════════════════════
         "opacity 0.92 0.88, class:^(kitty)$",
         "opacity 0.95 0.90, class:^(code)$",
         "opacity 0.95 0.90, class:^(Code)$",
         "opacity 0.95 0.90, class:^(codium)$",
         "opacity 0.95 0.90, class:^(vscodium)$",
         "opacity 0.95 0.90, class:^(antigravity-ide)$",
-    },
-})
 
--- ═══════════════════════════════════════════
--- 4. DAVRANIŞ VE ETKİNLİK KURALLARI
--- ═══════════════════════════════════════════
-hl.config({
-    windowrulev2 = {
+        -- ═══════════════════════════════════════════
+        -- 4. DAVRANIŞ VE ETKİNLİK KURALLARI
+        -- ═══════════════════════════════════════════
         -- Tam ekranda hypridle'ın ekranı kapatmasını önle (Film/Oyun)
         "idleinhibit fullscreen, fullscreen:1",
 
@@ -98,12 +87,10 @@ hl.config({
         -- XWayland Drag & Drop düzeltmesi (Hayalet pencere odak kaybını önler)
         "nofocus, class:^$, title:^$, xwayland:1, floating:1, fullscreen:0, pinned:0",
     },
-})
 
--- ═══════════════════════════════════════════
--- 5. LAYER RULES (Bar/Panel Glassmorphism)
--- ═══════════════════════════════════════════
-hl.config({
+    -- ═══════════════════════════════════════════
+    -- 5. LAYER RULES (Bar/Panel Glassmorphism)
+    -- ═══════════════════════════════════════════
     layerrule = {
         -- Sovereign Bar (Quickshell) — üstten kayar, glassmorphism blur
         "animation slide, sovereign-bar",

@@ -5,12 +5,12 @@ let
   cfg = config.wayland.windowManager.hyprland.luaConfig;
 
   # Eğer repoPath belirtilmişse geliştirici 'live-edit' modu (mkOutOfStoreSymlink),
-  # Belirtilmemişse saf Nix Store modu (turnkey kurulum, depoyu klonlamaya gerek yok).
-  resolveSource = relPath:
+  # Belirtilmemişse statik Nix Store yolu (turnkey kurulum, depoyu klonlamaya gerek yok).
+  resolveSource = storePath: relPath:
     if cfg.repoPath != null && cfg.repoPath != "" then
       config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/${relPath}"
     else
-      ./. + "/${relPath}";
+      storePath;
 in {
   options.wayland.windowManager.hyprland.luaConfig = {
     enable = mkEnableOption "Pure Lua Hyprland Configuration Framework";
@@ -46,12 +46,18 @@ in {
   config = mkIf cfg.enable {
 
     # ── Dosya Bağlantıları (Live-edit veya Nix Store) ─────────────────────
-    xdg.configFile."hypr/lua".source = resolveSource "lua";
-    xdg.configFile."hypr/hyprland.lua".source = resolveSource "lua/hyprland.lua";
-    xdg.configFile."hypr/hyprlock.conf".source = resolveSource "configs/hyprlock.conf";
-    xdg.configFile."hypr/hypridle.conf".source = resolveSource "configs/hypridle.conf";
-    xdg.configFile."hypr/scripts".source = resolveSource "scripts";
-    xdg.configFile."quickshell".source = resolveSource "quickshell";
+    # lib.mkDefault ile upstream Home Manager hyprland modülüyle çakışma riski önlenir.
+    xdg.configFile."hypr/lua".source = lib.mkDefault (resolveSource ./lua "lua");
+    xdg.configFile."hypr/hyprland.lua".source = lib.mkDefault (resolveSource ./lua/hyprland.lua "lua/hyprland.lua");
+    xdg.configFile."hypr/hyprlock.conf".source = lib.mkDefault (resolveSource ./configs/hyprlock.conf "configs/hyprlock.conf");
+    xdg.configFile."hypr/hypridle.conf".source = lib.mkDefault (resolveSource ./configs/hypridle.conf "configs/hypridle.conf");
+    xdg.configFile."hypr/scripts".source = lib.mkDefault (resolveSource ./scripts "scripts");
+    xdg.configFile."quickshell".source = lib.mkDefault (resolveSource ./quickshell "quickshell");
+
+    # ── Ekran Görüntüsü Dizini Güvencesi ──────────────────────────────────
+    home.activation.createScreenshots = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      mkdir -p "$HOME/Pictures/Screenshots"
+    '';
 
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
@@ -82,7 +88,6 @@ in {
     services.swayosd.enable = true;
 
     # ── Clipboard geçmişi daemon — cliphist ───────────────────────────────
-    # cliphist daemon arka planda clipboard geçmişini toplar.
     systemd.user.services.cliphist = {
       Unit = {
         Description          = "Clipboard history daemon (cliphist)";
@@ -99,22 +104,27 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
-    # ── Paketler ───────────────────────────────────────────────────────────
-    # Lua dosyalarının (binds.lua, autostart.lua) ve Quickshell'in doğrudan çağırdığı araçlar.
+    # ── Paketler & Bağımlılık Sözleşmesi ──────────────────────────────────
+    # Çerçevenin kısayollarının ve servislerinin ihtiyaç duyduğu tüm araçlar.
     home.packages = with pkgs; [
-      # ── Sovereign Shell & Yazı Tipleri ──────────────────────────────────
+      # ── Oturum ve Shell ──────────────────────────────────────────────────
       quickshell
+      uwsm
       (pkgs.nerd-fonts.jetbrains-mono or (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; }))
 
-      # ── Geliştirici ─────────────────────────────────────────────────────
+      # ── Geliştirici & Otomasyon ──────────────────────────────────────────
       lua-language-server
       lua
+      just
 
-      # ── Terminal (binds.lua: SUPER+Return) ──────────────────────────────
+      # ── Uygulamalar (binds.lua: SUPER+Return, SUPER+E) ───────────────────
       kitty
+      (pkgs.kdePackages.dolphin or pkgs.dolphin)
 
-      # ── Wallpaper (autostart.lua: awww) ─────────────────────────────────
+      # ── Duvar Kâğıdı & Efektler (autostart.lua / Dashboard) ──────────────
       awww
+      wlsunset
+      psmisc
 
       # ── Ekran kilidi + boşta kalma ──────────────────────────────────────
       hyprlock

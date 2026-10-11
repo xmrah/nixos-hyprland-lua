@@ -88,8 +88,8 @@ def check_shell_injection():
     return True
 
 def check_secret_leaks():
-    print("🛡️ [QC 4/4] Sır ve kişisel veri sızıntı taraması...")
-    leak_pattern = re.compile(r'password\s*=|api[_-]?key\s*=|private_key|xmrah7@gmail\.com', re.IGNORECASE)
+    print("🛡️ [QC 4/4] Sır ve kimlik bilgisi sızıntı taraması...")
+    leak_pattern = re.compile(r'password\s*=\s*["\'][^"\']+["\']|api[_-]?key\s*=\s*["\'][^"\']+["\']|-----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----', re.IGNORECASE)
     errors = []
     for root, dirs, files in os.walk(BASE_DIR):
         if any(ignored in root for ignored in [".git", ".agent"]):

@@ -7,11 +7,10 @@ if not hl then return end
 
 
 -- Dinamik ve Güvenli Yol Tespiti
-local user_home = os.getenv("HOME")
-    or os.getenv("XDG_CONFIG_HOME")
-               or ("/home/" .. (os.getenv("USER") or "unknown"))
+local config_dir = os.getenv("XDG_CONFIG_HOME")
+    or ((os.getenv("HOME") or ("/home/" .. (os.getenv("USER") or "unknown"))) .. "/.config")
 
-local lua_dir = user_home .. "/.config/hypr/lua/"
+local lua_dir = config_dir .. "/hypr/lua/"
 
 local function load_module(path)
     local full_path = lua_dir .. path .. ".lua"
@@ -51,4 +50,4 @@ load_module("wm/rules")
 load_module("wm/events")
 load_module("wm/binds")
 
-io.stderr:write("[hyprland.lua] Sovereign Ecosystem initialized — " .. user_home .. "\n")
+io.stderr:write("[hyprland.lua] Sovereign Ecosystem initialized — " .. config_dir .. "\n")

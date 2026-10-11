@@ -28,7 +28,7 @@ QtObject {
     }
 
     property var _gpuProc: Process {
-        command: ["sh", "-c", "cat /sys/class/drm/card1/device/gpu_busy_percent 2>/dev/null || echo 0"]
+        command: ["sh", "-c", "dev=$(ls -d /sys/class/drm/card[1-9]/device 2>/dev/null | head -n1); [ -z \"$dev\" ] && dev=$(ls -d /sys/class/drm/card0/device 2>/dev/null | head -n1); cat \"$dev/gpu_busy_percent\" 2>/dev/null || echo 0"]
         running: false
         stdout: SplitParser {
             onRead: data => { svc.gpuUsage = parseInt(data) || 0 }
@@ -36,7 +36,7 @@ QtObject {
     }
 
     property var _vramProc: Process {
-        command: ["sh", "-c", "u=$(cat /sys/class/drm/card1/device/mem_info_vram_used 2>/dev/null || echo 0); t=$(cat /sys/class/drm/card1/device/mem_info_vram_total 2>/dev/null || echo 1073741824); awk -v u=$u -v t=$t 'BEGIN { printf \"%d|%.1f / %.1f GB\\n\", (u/t)*100, u/1073741824, t/1073741824 }'"]
+        command: ["sh", "-c", "dev=$(ls -d /sys/class/drm/card[1-9]/device 2>/dev/null | head -n1); [ -z \"$dev\" ] && dev=$(ls -d /sys/class/drm/card0/device 2>/dev/null | head -n1); u=$(cat \"$dev/mem_info_vram_used\" 2>/dev/null || echo 0); t=$(cat \"$dev/mem_info_vram_total\" 2>/dev/null || echo 0); awk -v u=$u -v t=$t 'BEGIN { if (t > 0) printf \"%d|%.1f / %.1f GB\\n\", (u/t)*100, u/1073741824, t/1073741824; else print \"0|N/A\" }'"]
         running: false
         stdout: SplitParser {
             onRead: data => {

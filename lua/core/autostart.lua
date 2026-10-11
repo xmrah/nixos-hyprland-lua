@@ -14,7 +14,7 @@ hl.on("hyprland.start", function()
     -- Wallpaper Engine + ilk görüntü
     -- nixpkgs 26.05: swww → awww olarak yeniden adlandırıldı
     hl.exec_cmd("awww-daemon")
-    hl.exec_cmd("sh -c 'until awww query 2>/dev/null; do sleep 0.05; done && awww img ~/.config/hypr/wallpaper.png --transition-type fade --transition-duration 1 --transition-fps 90'")
+    hl.exec_cmd("sh -c 'until awww query 2>/dev/null; do sleep 0.05; done; if [ -f ~/.config/hypr/wallpaper.png ]; then awww img ~/.config/hypr/wallpaper.png --transition-type fade --transition-duration 1 --transition-fps 90; fi'")
 
     -- Ağ Yönetimi
     hl.exec_cmd("nm-applet --indicator")
