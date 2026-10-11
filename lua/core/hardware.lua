@@ -11,15 +11,18 @@ if card1 then
 end
 
 -- Monitör Yapılandırması
--- Özel monitör: ASUS ROG Strix XG27ACS — 2560x1440@180Hz
-hl.monitor({
-    output   = "desc:ASUSTek COMPUTER INC XG27ACS SBLMTF097654",
-    mode     = "2560x1440@180",
-    position = "auto",
-    scale    = "1",
-})
+-- Özel monitör ortam değişkeni veya override varsa uygula
+local custom_desc = os.getenv("HYPR_MONITOR_DESC")
+if custom_desc and custom_desc ~= "" then
+    hl.monitor({
+        output   = custom_desc,
+        mode     = os.getenv("HYPR_MONITOR_MODE") or "preferred",
+        position = os.getenv("HYPR_MONITOR_POS") or "auto",
+        scale    = os.getenv("HYPR_MONITOR_SCALE") or "1",
+    })
+end
 
--- Genel Monitör Fallback (VM ve diğer ekranlar için)
+-- Genel Monitör Tanımı (Otomatik algılama: tüm ekranlar, harici monitörler ve VM için)
 hl.monitor({
     output   = "",
     mode     = "preferred",

@@ -637,7 +637,7 @@ PanelWindow {
 
                     TapHandler {
                         onTapped: {
-                            Quickshell.execDetached(["dl-toggle"]);
+                            Quickshell.execDetached(["sh", "-c", "command -v dl-toggle >/dev/null 2>&1 && dl-toggle || notify-send -u low 'Kasa' 'dl-toggle aracı sistemde kurulu değil'"]);
                             vaultTimer.restart();
                         }
                     }
@@ -897,7 +897,7 @@ PanelWindow {
                                             TapHandler {
                                                 onTapped: {
                                                     if (modelData.inUse) {
-                                                        Quickshell.execDetached(["nmcli", "dev", "disconnect", "wlp9s0"]);
+                                                        Quickshell.execDetached(["sh", "-c", "DEV=$(nmcli -t -f DEVICE,TYPE dev 2>/dev/null | awk -F: '$2==\"wifi\"{print $1; exit}'); [ -n \"$DEV\" ] && nmcli dev disconnect \"$DEV\""]);
                                                         wifiScanTimer.restart();
                                                     } else if (!modelData.isSecure) {
                                                         Quickshell.execDetached(["nmcli", "dev", "wifi", "connect", modelData.ssid]);

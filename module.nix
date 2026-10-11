@@ -3,17 +3,27 @@
 let
   inherit (lib) mkIf mkEnableOption mkOption types;
   cfg = config.wayland.windowManager.hyprland.luaConfig;
+
+  # Eğer repoPath belirtilmişse geliştirici 'live-edit' modu (mkOutOfStoreSymlink),
+  # Belirtilmemişse saf Nix Store modu (turnkey kurulum, depoyu klonlamaya gerek yok).
+  resolveSource = relPath:
+    if cfg.repoPath != null && cfg.repoPath != "" then
+      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/${relPath}"
+    else
+      ./. + "/${relPath}";
 in {
   options.wayland.windowManager.hyprland.luaConfig = {
     enable = mkEnableOption "Pure Lua Hyprland Configuration Framework";
 
     repoPath = mkOption {
-      type        = types.str;
+      type        = types.nullOr types.str;
+      default     = null;
       example     = "/home/username/Projects/nixos-hyprland-lua";
       description = ''
-        nixos-hyprland-lua repo'sunun mutlak yolu.
-        mkOutOfStoreSymlink bu yolu kullanır — live-edit çalışır
-        (home-manager rebuild olmadan lua dosyaları anında etkinleşir).
+        nixos-hyprland-lua reposunun mutlak yerel yolu.
+        Belirtilirse mkOutOfStoreSymlink ile 'live-edit' modu açılır
+        (home-manager rebuild gerekmeden lua/qml değişiklikleri anında etkinleşir).
+        Belirtilmezse (varsayılan) dosyalar doğrudan Nix Store'dan bağlanır (bağımsız turnkey mod).
       '';
     };
 
@@ -35,26 +45,12 @@ in {
 
   config = mkIf cfg.enable {
 
-    # ── Live-edit symlink'ler ──────────────────────────────────────────────
-    # HM rebuild gerekmeden lua ve quickshell dosyaları anında etkinleşir.
-    xdg.configFile."hypr/lua".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/lua";
-
-    xdg.configFile."hypr/hyprland.lua".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/lua/hyprland.lua";
-
-    xdg.configFile."hypr/hyprlock.conf".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hyprlock.conf";
-
-    xdg.configFile."hypr/hypridle.conf".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/configs/hypridle.conf";
-
-    # Quickshell — live-edit (QML değişiklikleri yeniden başlatmada aktif)
-    xdg.configFile."quickshell".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.repoPath}/quickshell";
-
-    # Legacy symlink'ler kaldırıldı: wofi, swaync, wlogout
-    # Tüm UI artık Quickshell üzerinden yönetiliyor.
+    # ── Dosya Bağlantıları (Live-edit veya Nix Store) ─────────────────────
+    xdg.configFile."hypr/lua".source = resolveSource "lua";
+    xdg.configFile."hypr/hyprland.lua".source = resolveSource "lua/hyprland.lua";
+    xdg.configFile."hypr/hyprlock.conf".source = resolveSource "configs/hyprlock.conf";
+    xdg.configFile."hypr/hypridle.conf".source = resolveSource "configs/hypridle.conf";
+    xdg.configFile."quickshell".source = resolveSource "quickshell";
 
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────
     # home.sessionVariables shell profile'a yazar, UWSM okumaz.
@@ -102,14 +98,12 @@ in {
       Install.WantedBy = [ "graphical-session.target" ];
     };
 
-    # swaync servisi kaldırıldı — bildirimler Quickshell üzerinden yönetilecek.
-
     # ── Paketler ───────────────────────────────────────────────────────────
-    # Lua dosyalarının (binds.lua, autostart.lua) doğrudan çağırdığı araçlar.
-    # Kullanıcının home.packages'ına dokunmasına gerek kalmaz.
+    # Lua dosyalarının (binds.lua, autostart.lua) ve Quickshell'in doğrudan çağırdığı araçlar.
     home.packages = with pkgs; [
-      # ── Sovereign Shell ──────────────────────────────────────────────────
+      # ── Sovereign Shell & Yazı Tipleri ──────────────────────────────────
       quickshell
+      (pkgs.nerd-fonts.jetbrains-mono or (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; }))
 
       # ── Geliştirici ─────────────────────────────────────────────────────
       lua-language-server
@@ -131,8 +125,9 @@ in {
       swappy
       wl-clipboard
 
-      # ── Parlaklık — DDC/CI (binds.lua + Brightness.qml) ────────────────
+      # ── Parlaklık (DDC/CI ve Laptop/VM fallback) ───────────────────────
       ddcutil
+      brightnessctl
 
       # ── Bildirim (libnotify CLI) ────────────────────────────────────────
       libnotify

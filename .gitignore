@@ -6,3 +6,10 @@ result-*
 # Ignore automatically generated direnv output
 .direnv
 
+# ---> IDE & AI Tooling
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
