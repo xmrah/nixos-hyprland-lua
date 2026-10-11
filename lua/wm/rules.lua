@@ -42,28 +42,6 @@ hl.config({
         "tile, class:^(steam)$, title:^(Steam)$",
 
         -- ═══════════════════════════════════════════
-        -- 2. WORKSPACE ATAMALARI
-        -- ═══════════════════════════════════════════
-        -- Terminal → Workspace 2
-        "workspace 2, class:^(kitty)$",
-
-        -- Dosya Yöneticisi → Workspace 3
-        "workspace 3, class:^(org.kde.dolphin)$",
-
-        -- Kod Editörü → Workspace 4
-        "workspace 4, class:^(code)$",
-        "workspace 4, class:^(Code)$",
-        "workspace 4, class:^(codium)$",
-        "workspace 4, class:^(vscodium)$",
-        "workspace 4, class:^(antigravity-ide)$",
-
-        -- İletişim → Workspace 8
-        "workspace 8, class:^(discord)$",
-        "workspace 8, class:^(vesktop)$",
-
-        -- Müzik → Workspace 9
-        "workspace 9, class:^(Spotify)$",
-        "workspace 9, title:^(Spotify)$",
 
         -- ═══════════════════════════════════════════
         -- 3. OPASİTE (Glassmorphism derinliği)
