@@ -50,6 +50,7 @@ in {
     xdg.configFile."hypr/hyprland.lua".source = resolveSource "lua/hyprland.lua";
     xdg.configFile."hypr/hyprlock.conf".source = resolveSource "configs/hyprlock.conf";
     xdg.configFile."hypr/hypridle.conf".source = resolveSource "configs/hypridle.conf";
+    xdg.configFile."hypr/scripts".source = resolveSource "scripts";
     xdg.configFile."quickshell".source = resolveSource "quickshell";
 
     # ── Klavye düzeni — hardware.lua bu env var'ları okur ─────────────────

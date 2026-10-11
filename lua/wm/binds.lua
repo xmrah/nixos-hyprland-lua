@@ -98,10 +98,9 @@ hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl stop"),       { locked = tru
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- Parlaklık (DDC/CI — harici monitör, /sys/class/backlight yok)
--- NOT: Kernel panic'i önlemek için I2C debounce scripti kullanıldı ve bus 9'a sınırlandırıldı.
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh 9 + 5"), { locked = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh 9 - 5"), { locked = true })
+-- Parlaklık (DDC/CI ve Laptop/VM uyumlu dinamik kontrol)
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh +5"), { locked = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh -5"), { locked = true })
 
 -- ═══════════════════════════════════════════
 -- 8. EKRAN GÖRÜNTÜSÜ

@@ -94,6 +94,9 @@ hl.config({
 
         -- Chromium ve Electron uygulamalarının pencere açılışında sahte maximize isteklerini bastır
         "suppressevent maximize, class:.*",
+
+        -- XWayland Drag & Drop düzeltmesi (Hayalet pencere odak kaybını önler)
+        "nofocus, class:^$, title:^$, xwayland:1, floating:1, fullscreen:0, pinned:0",
     },
 })
 
@@ -121,5 +124,10 @@ hl.config({
         "animation fade, sovereign-notifications",
         "blur, sovereign-notifications",
         "ignorezero, sovereign-notifications",
+
+        -- Sovereign Overview (Quickshell) — SUPER+Tab genel bakış
+        "animation fade, sovereign-overview",
+        "blur, sovereign-overview",
+        "ignorezero, sovereign-overview",
     },
 })
