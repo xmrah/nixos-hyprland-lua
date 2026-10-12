@@ -25,7 +25,7 @@ end
 -- Genel Monitör Tanımı (Otomatik algılama: tüm ekranlar, harici monitörler ve VM için)
 hl.monitor({
     output   = "",
-    mode     = "preferred",
+    mode     = "2560x1440@180",
     position = "auto",
     scale    = "1",
 })
